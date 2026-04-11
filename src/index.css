@@ -1,0 +1,75 @@
+/* ============================================================
+   index.css — ALL STYLES AND ANIMATIONS LIVE HERE
+   ============================================================ */
+
+/* 1. Load the Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* 2. Tell Tailwind to include its base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 3. Global base styles — applied to every page */
+@layer base {
+  body {
+    /* The subtle emerald glow at the top comes from this gradient.
+       Change rgba(16,185,129,...) to another color if you want a different accent. */
+    background: radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.04) 0%, #020617 50%);
+    background-color: #020617; /* fallback solid color (slate-950) */
+    color: #f8fafc; /* default text color (slate-50) */
+    -webkit-font-smoothing: antialiased; /* smoother font rendering */
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* 4. Fade-in animation — plays every time you switch to a new tab */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px); /* starts 12px lower */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);   /* ends at normal position */
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+/* 5. Stagger animations — used only on the Home bento grid
+      Each card appears slightly after the previous one.
+      If you add more cards, add .animate-stagger-7, .animate-stagger-8, etc.
+      and increase the delay by 0.05s each time. */
+@keyframes staggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-stagger-1 { animation: staggerIn 0.5s ease-out 0.05s both; }
+.animate-stagger-2 { animation: staggerIn 0.5s ease-out 0.10s both; }
+.animate-stagger-3 { animation: staggerIn 0.5s ease-out 0.15s both; }
+.animate-stagger-4 { animation: staggerIn 0.5s ease-out 0.20s both; }
+.animate-stagger-5 { animation: staggerIn 0.5s ease-out 0.25s both; }
+.animate-stagger-6 { animation: staggerIn 0.5s ease-out 0.30s both; }
+
+/* 6. Hide scrollbar on the navbar tab row (mobile overflow) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 7. Text selection color — emerald tint when you highlight text */
+::selection {
+  background-color: rgba(16, 185, 129, 0.3);
+  color: #f8fafc;
+}
