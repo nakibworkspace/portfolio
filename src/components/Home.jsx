@@ -1,118 +1,114 @@
 // ============================================================
-// Home.jsx — THE LANDING SECTION (Bento Grid)
+// Home.jsx — LANDING SECTION (Vertical Stack Layout)
 //
-// HOW IT WORKS:
-//   - Uses a CSS Grid to create a "bento box" layout
-//   - The main card spans 2 columns and 2 rows (large)
-//   - Smaller cards fill the remaining spaces
-//   - Each card has a staggered entrance animation
-//
-// HOW TO MODIFY:
-//   - To change what a card says: edit the personalInfo references
-//   - To add a new card: copy one card block, change content and
-//     the animate-stagger-N class (add new ones in index.css)
-//   - To change the grid layout: adjust md:col-span and md:row-span
+// Changed from bento grid to a clean one-by-one vertical layout.
+// Each info block is a simple row: icon on left, text on right.
 // ============================================================
 
-import { personalInfo } from '../data';
-// Import icons from lucide-react (each is just an SVG component)
-import { Briefcase, GraduationCap, Microscope, MapPin, Mail } from 'lucide-react';
+import { personalInfo, education, research } from '../data';
+import { MapPin, Briefcase, GraduationCap, Microscope } from 'lucide-react';
 
 export default function Home() {
+  // Take just the first education entry for the quick summary
+  const edu = education[0];
+  // Take the first research entry for the quick summary
+  const res = research[0];
+
   return (
-    <div className="space-y-8">
-      {/* ─── BENTO GRID ────────────────────────────────── */}
-      {/* grid-cols-1 = 1 column on mobile */}
-      {/* md:grid-cols-3 = 3 columns on medium screens and up */}
-      {/* gap-4 = 16px gap between cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="space-y-10 max-w-2xl">
 
-        {/* ─── CARD 1: Main Hero (large) ──────────────── */}
-        {/* md:col-span-2 = takes 2 of 3 columns */}
-        {/* md:row-span-2 = takes 2 rows tall */}
-        <div className="md:col-span-2 md:row-span-2 bg-slate-900/50 border border-slate-800/60 rounded-2xl p-8 flex flex-col justify-center animate-stagger-1">
-          {/* Small green label above name */}
-          <p className="text-emerald-400 text-sm font-medium tracking-wider uppercase mb-3">
-            {personalInfo.tagline}
-          </p>
-          {/* Your full name — very large */}
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-50 leading-tight mb-4">
-            {personalInfo.name}
-          </h1>
-          {/* The headline sentence */}
-          <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
-            {personalInfo.headline}
-          </p>
+      {/* ─── NAME + HEADLINE ───────────────────────────── */}
+      <div>
+        <p className="text-emerald-400 text-sm font-medium tracking-wider uppercase mb-3">
+          {personalInfo.tagline}
+        </p>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-50 leading-tight mb-4">
+          {personalInfo.name}
+        </h1>
+        <p className="text-lg text-slate-400 leading-relaxed">
+          {personalInfo.headline}
+        </p>
+      </div>
 
-          {/* Quick links row */}
-          <div className="flex gap-4 mt-6">
-            {personalInfo.github && (
-              <a
-                href={personalInfo.github}
-                target="_blank"        // opens in new tab
-                rel="noopener noreferrer" // security best practice for target="_blank"
-                className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
-              >
-                GitHub →
-              </a>
-            )}
-            {personalInfo.linkedin && (
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
-              >
-                LinkedIn →
-              </a>
-            )}
+      {/* Thin divider line */}
+      <div className="border-t border-slate-800/60" />
+
+      {/* ─── INFO ROWS (one by one) ────────────────────── */}
+      <div className="space-y-5">
+
+        {/* Based In */}
+        <div className="flex items-start gap-4">
+          <div className="w-9 h-9 rounded-lg bg-slate-800/60 flex items-center justify-center shrink-0 mt-0.5">
+            <MapPin className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Based In</p>
+            <p className="text-slate-200 mt-0.5">{personalInfo.location}</p>
           </div>
         </div>
 
-        {/* ─── CARD 2: Current Role ───────────────────── */}
-        <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-center animate-stagger-2 hover:border-slate-700/60 transition-colors">
-          <Briefcase className="w-5 h-5 text-emerald-400 mb-3" />
-          <p className="text-sm text-slate-500 font-medium">Current Role</p>
-          <p className="text-slate-200 font-semibold mt-1">{personalInfo.role}</p>
-          <p className="text-emerald-400 text-sm mt-0.5">{personalInfo.company}</p>
+        {/* Current Role */}
+        <div className="flex items-start gap-4">
+          <div className="w-9 h-9 rounded-lg bg-slate-800/60 flex items-center justify-center shrink-0 mt-0.5">
+            <Briefcase className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Current Role</p>
+            <p className="text-slate-200 mt-0.5">{personalInfo.role} <span className="text-emerald-400">@ {personalInfo.company}</span></p>
+          </div>
         </div>
 
-        {/* ─── CARD 3: Education ──────────────────────── */}
-        <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-center animate-stagger-3 hover:border-slate-700/60 transition-colors">
-          <GraduationCap className="w-5 h-5 text-emerald-400 mb-3" />
-          <p className="text-sm text-slate-500 font-medium">Education</p>
-          <p className="text-slate-200 font-semibold mt-1">BSc MEIE</p>
-          <p className="text-slate-400 text-sm mt-0.5">CUET · CGPA 3.29</p>
+        {/* Education */}
+        <div className="flex items-start gap-4">
+          <div className="w-9 h-9 rounded-lg bg-slate-800/60 flex items-center justify-center shrink-0 mt-0.5">
+            <GraduationCap className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Education</p>
+            <p className="text-slate-200 mt-0.5">{edu.degree}</p>
+            <p className="text-slate-400 text-sm mt-0.5">{edu.institution} · CGPA {edu.cgpa}</p>
+          </div>
         </div>
 
-        {/* ─── CARD 4: Research Focus ─────────────────── */}
-        <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-center animate-stagger-4 hover:border-slate-700/60 transition-colors">
-          <Microscope className="w-5 h-5 text-emerald-400 mb-3" />
-          <p className="text-sm text-slate-500 font-medium">Research Focus</p>
-          <p className="text-slate-200 font-semibold mt-1 text-sm">Neural NLP · VLMs</p>
-          <p className="text-slate-400 text-sm mt-0.5">Robot Navigation</p>
+        {/* Research Interest */}
+        <div className="flex items-start gap-4">
+          <div className="w-9 h-9 rounded-lg bg-slate-800/60 flex items-center justify-center shrink-0 mt-0.5">
+            <Microscope className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Research Interest</p>
+            <p className="text-slate-200 mt-0.5">{res.title}</p>
+            <p className="text-slate-400 text-sm mt-0.5">{res.description.substring(0, 100)}...</p>
+          </div>
         </div>
 
-        {/* ─── CARD 5: Location ───────────────────────── */}
-        <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-center animate-stagger-5 hover:border-slate-700/60 transition-colors">
-          <MapPin className="w-5 h-5 text-emerald-400 mb-3" />
-          <p className="text-sm text-slate-500 font-medium">Based In</p>
-          <p className="text-slate-200 font-semibold mt-1">{personalInfo.location}</p>
-        </div>
+      </div>
 
-        {/* ─── CARD 6: Email ──────────────────────────── */}
-        <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-center animate-stagger-6 hover:border-slate-700/60 transition-colors">
-          <Mail className="w-5 h-5 text-emerald-400 mb-3" />
-          <p className="text-sm text-slate-500 font-medium">Contact</p>
-          {/* mailto: link opens the user's email app */}
+      {/* Thin divider line */}
+      <div className="border-t border-slate-800/60" />
+
+      {/* Quick links */}
+      <div className="flex gap-4">
+        {personalInfo.github && (
           <a
-            href={`mailto:${personalInfo.email}`}
-            className="text-slate-200 font-semibold mt-1 text-sm hover:text-emerald-400 transition-colors"
+            href={personalInfo.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
           >
-            {personalInfo.email}
+            GitHub →
           </a>
-        </div>
-
+        )}
+        {personalInfo.linkedin && (
+          <a
+            href={personalInfo.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-slate-500 hover:text-emerald-400 transition-colors"
+          >
+            LinkedIn →
+          </a>
+        )}
       </div>
     </div>
   );

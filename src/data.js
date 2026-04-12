@@ -25,18 +25,18 @@ export const personalInfo = {
     role: "Junior Software Engineer",
     company: "Poridhi.io",
     roleFocus: "MLOps & Data Pipeline Development",
-    location: "Chittagong, Bangladesh",
+    location: "Dhaka, Bangladesh",
   
     // ← REPLACE with your real email
-    email: "your-email@example.com",
+    email: "rajnakib2003@gmail.com",
   
     // ← REPLACE with your real profile URLs
-    linkedin: "https://linkedin.com/in/yourprofile",
-    github: "https://github.com/yourusername",
+    linkedin: "https://www.linkedin.com/in/nakibahmedraj/",
+    github: "https://github.com/nakibworkspace",
   
     // Path to your CV file. Put your PDF in the "public" folder
     // and make sure the filename matches (e.g., "public/resume.pdf")
-    cvLink: "/resume.pdf",
+    cvLink: "/Users/nakibahmed/workspace/portfolio/public/Nakib Ahmed Raj- CV.pdf",
   };
   
   
@@ -48,7 +48,7 @@ export const personalInfo = {
       title: "Junior Software Engineer",
       company: "Poridhi.io",
       period: "2024 — Present",         // ← Update your start/end dates
-      focus: "MLOps & Data Focus",       // Optional subtitle
+      focus: "Data Engineering, MLOps and LLMOps",       // Optional subtitle
       // Each string below = one bullet point on the timeline
       points: [
         "Designed and deployed end-to-end Churn Detection & Fraud Detection ML pipelines with reproducible experiment tracking via MLflow.",
@@ -115,7 +115,7 @@ export const personalInfo = {
       degree: "BSc in Mechatronics & Industrial Engineering",
       institution: "Chittagong University of Engineering and Technology (CUET)",
       period: "2020 — 2024",           // ← Update dates
-      cgpa: "3.29 / 4.00",
+      cgpa: "3.27 / 4.00",
       // Bullet points for thesis, achievements, etc.
       highlights: [
         "Thesis: Online Harassment Detection using Neural NLP Approaches",
