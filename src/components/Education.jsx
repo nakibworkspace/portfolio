@@ -1,14 +1,8 @@
 // ============================================================
-// Education.jsx — DEGREE(S) + LEADERSHIP SECTION
+// Education.jsx — DEGREES + LEADERSHIP (NO CARDS)
 //
-// HOW IT WORKS:
-//   - Reads "education" and "leadership" arrays from data.js
-//   - Shows degree card(s) first, then a leadership subsection
-//   - Each degree card shows: icon, title, institution, CGPA, dates
-//
-// HOW TO MODIFY:
-//   - Add/remove degrees in data.js (education array)
-//   - Add/remove leadership roles in data.js (leadership array)
+// Flat list separated by hairline dividers. The graduation cap /
+// trophy icons are inline with the text, not in colored boxes.
 // ============================================================
 
 import { education, leadership } from '../data';
@@ -16,86 +10,78 @@ import { GraduationCap, Trophy, Calendar, Star } from 'lucide-react';
 
 export default function Education() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-50">Education & Leadership</h2>
-        <p className="text-slate-400 mt-1">Academic background and extracurricular leadership.</p>
-      </div>
+    <div className="space-y-16 max-w-4xl">
 
-      {/* ─── EDUCATION CARDS ──────────────────────────────── */}
-      <div className="space-y-4">
-        {education.map((edu, index) => (
-          <div key={index} className="bg-slate-900/50 border border-slate-800/60 rounded-xl p-6 hover:border-slate-700/60 transition-colors">
-            {/* Top row: icon + degree info on left, CGPA + date on right */}
-            <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <GraduationCap className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-50">{edu.degree}</h3>
-                  <p className="text-slate-400 text-sm mt-0.5">{edu.institution}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                {/* CGPA — only shown if the field exists in data.js */}
-                {edu.cgpa && (
-                  <div className="flex items-center gap-1.5 text-emerald-400 text-sm font-semibold">
-                    <Star className="w-4 h-4" />
-                    {edu.cgpa}
-                  </div>
-                )}
-                <div className="flex items-center gap-1.5 text-slate-500 text-sm">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {edu.period}
+      {/* EDUCATION */}
+      <div className="space-y-6">
+        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold flex items-center gap-2">
+          <GraduationCap className="w-4 h-4" />
+          Education
+        </h2>
+
+        <ul className="divide-y divide-divider border-t border-divider">
+          {education.map((edu, index) => (
+            <li key={index} className="py-6 first:pt-2">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="text-lg sm:text-xl font-semibold text-fg">{edu.degree}</h3>
+                <div className="flex items-center gap-4 text-xs">
+                  {edu.cgpa && (
+                    <span className="flex items-center gap-1 text-accent-text font-semibold">
+                      <Star className="w-3.5 h-3.5" />
+                      {edu.cgpa}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1 text-fg-mute">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {edu.period}
+                  </span>
                 </div>
               </div>
-            </div>
+              <p className="mt-1 text-sky-light text-sm">{edu.institution}</p>
 
-            {/* Thesis/highlights bullets */}
-            {edu.highlights && edu.highlights.length > 0 && (
-              <ul className="space-y-1.5 mt-3 pl-1">
-                {edu.highlights.map((h, i) => (
-                  <li key={i} className="text-slate-300 text-sm flex gap-2">
-                    <span className="text-emerald-500">▹</span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))}
+              {edu.highlights && edu.highlights.length > 0 && (
+                <ul className="mt-3 space-y-1.5 max-w-2xl">
+                  {edu.highlights.map((h, i) => (
+                    <li key={i} className="text-fg-dim text-sm flex gap-2">
+                      <span className="text-accent shrink-0">▹</span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {/* ─── LEADERSHIP SECTION ──────────────────────────── */}
-      {/* Only rendered if there are leadership entries in data.js */}
+      {/* LEADERSHIP */}
       {leadership.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-emerald-400" />
+        <div className="space-y-6">
+          <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold flex items-center gap-2">
+            <Trophy className="w-4 h-4" />
             Leadership
-          </h3>
-          <div className="space-y-4">
+          </h2>
+
+          <ul className="divide-y divide-divider border-t border-divider">
             {leadership.map((item, index) => (
-              <div key={index} className="bg-slate-900/50 border border-slate-800/60 rounded-xl p-6 hover:border-slate-700/60 transition-colors">
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                  <div>
-                    <h4 className="text-base font-semibold text-slate-100">{item.role}</h4>
-                    <p className="text-slate-400 text-sm mt-0.5">{item.institution}</p>
-                  </div>
-                  <span className="text-slate-500 text-sm">{item.period}</span>
+              <li key={index} className="py-6 first:pt-2">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="text-base sm:text-lg font-semibold text-fg">{item.role}</h3>
+                  <span className="text-xs text-fg-mute">{item.period}</span>
                 </div>
-                <ul className="space-y-1.5 mt-3">
+                <p className="mt-1 text-sky-light text-sm">{item.institution}</p>
+
+                <ul className="mt-3 space-y-1.5 max-w-2xl">
                   {item.points.map((p, i) => (
-                    <li key={i} className="text-slate-300 text-sm flex gap-2">
-                      <span className="text-emerald-500">▹</span>
+                    <li key={i} className="text-fg-dim text-sm flex gap-2">
+                      <span className="text-accent shrink-0">▹</span>
                       {p}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
     </div>

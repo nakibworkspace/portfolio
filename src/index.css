@@ -2,55 +2,85 @@
    index.css — ALL STYLES AND ANIMATIONS LIVE HERE
    ============================================================ */
 
-/* 1. Load the Inter font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* 1. Load the Inter font from Google Fonts.
+      NOTE: @import must come before any other rules or PostCSS
+      throws a warning and may silently skip the import. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* 2. Tell Tailwind to include its base styles */
+/* 2. Theme tokens — CSS variables for dark + light.
+      Light is the default. Add `.dark` to <html> for dark theme. */
+:root {
+  --bg:           #f1faee;
+  --bg-elevated:  #ffffff;
+  --fg:           #0d1b2a;
+  --fg-dim:       #1b2a3a;
+  --fg-mute:      #457b9d;
+
+  --accent:        #e63946;
+  --accent-soft:   rgba(230, 57, 70, 0.10);
+  --accent-border: rgba(230, 57, 70, 0.35);
+  --accent-text:   #b21e2b;
+
+  --sky:        #345a78;
+  --sky-light:  #345a78;
+  --sky-dark:   #1d3557;
+
+  --divider: rgba(13, 27, 42, 0.12);
+  --code-bg:  rgba(13, 27, 42, 0.05);
+}
+
+:root.dark {
+  --bg:           #0d1b2a;
+  --bg-elevated:  #11253c;
+  --fg:           #f1faee;
+  --fg-dim:       rgba(241, 250, 238, 0.72);
+  --fg-mute:      rgba(241, 250, 238, 0.45);
+
+  --accent:        #e63946;
+  --accent-soft:   rgba(230, 57, 70, 0.14);
+  --accent-border: rgba(230, 57, 70, 0.30);
+  --accent-text:   #ff6b78;
+
+  --sky:        #457b9d;
+  --sky-light:  #a8dadc;
+  --sky-dark:   #345a78;
+
+  --divider: rgba(241, 250, 238, 0.10);
+  --code-bg:  rgba(241, 250, 238, 0.05);
+}
+
+/* 3. Tailwind layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 3. Global base styles — applied to every page */
+/* 3. Global base styles */
 @layer base {
   body {
-    /* The subtle emerald glow at the top comes from this gradient.
-       Change rgba(16,185,129,...) to another color if you want a different accent. */
-    background: radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.04) 0%, #020617 50%);
-    background-color: #020617; /* fallback solid color (slate-950) */
-    color: #f8fafc; /* default text color (slate-50) */
-    -webkit-font-smoothing: antialiased; /* smoother font rendering */
+    background:
+      radial-gradient(ellipse at 50% 0%, var(--accent-soft) 0%, var(--bg) 55%),
+      var(--bg);
+    background-color: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
     font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
 /* 4. Fade-in animation — plays every time you switch to a new tab */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px); /* starts 12px lower */
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);   /* ends at normal position */
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .animate-fadeIn {
   animation: fadeIn 0.35s ease-out forwards;
 }
 
-/* 5. Stagger animations — used only on the Home bento grid
-      Each card appears slightly after the previous one.
-      If you add more cards, add .animate-stagger-7, .animate-stagger-8, etc.
-      and increase the delay by 0.05s each time. */
+/* 5. Stagger animations */
 @keyframes staggerIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .animate-stagger-1 { animation: staggerIn 0.5s ease-out 0.05s both; }
 .animate-stagger-2 { animation: staggerIn 0.5s ease-out 0.10s both; }
@@ -59,7 +89,7 @@
 .animate-stagger-5 { animation: staggerIn 0.5s ease-out 0.25s both; }
 .animate-stagger-6 { animation: staggerIn 0.5s ease-out 0.30s both; }
 
-/* 6. Hide scrollbar on the navbar tab row (mobile overflow) */
+/* 6. Hide scrollbar */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -68,8 +98,111 @@
   display: none;
 }
 
-/* 7. Text selection color — emerald tint when you highlight text */
+/* 7. Text selection */
 ::selection {
-  background-color: rgba(16, 185, 129, 0.3);
-  color: #f8fafc;
+  background-color: var(--accent-soft);
+  color: var(--fg);
+}
+
+/* 8. Utilities */
+@layer utilities {
+  /* Accent line under hero name */
+  .accent-line {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--accent) 50%,
+      transparent 100%
+    );
+  }
+  /* Multi-color accent line — distributes the palette */
+  .accent-line-multi {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--sky-light) 18%,
+      var(--sky) 42%,
+      var(--accent) 62%,
+      var(--sky) 82%,
+      transparent 100%
+    );
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  /* Edge fade for marquee */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+            mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+  /* Uppercase, letterspaced, weighty chip text for marquee.
+      Looks closest to the reference image's spaced caps. */
+  .marquee-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.95rem;
+    color: var(--fg);
+  }
+}
+
+/* 9. Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  will-change: opacity, transform;
+}
+.reveal[data-visible='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 10. Reduced-motion guard */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-fadeIn,
+  [class*='animate-stagger-'] {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .marquee-track {
+    animation-play-state: paused !important;
+  }
+}
+
+/* 11. Focus ring for graph nodes */
+.node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* 12. Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* 13. Marquee animation — translate the duplicated track from 0
+      to -50% so when it loops back to 0 the second copy is now in
+      the first copy's starting position. Seamless infinite scroll.
+      Default duration is overridden via the --marquee-duration
+      custom property on the track element. */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }

@@ -1,14 +1,9 @@
 // ============================================================
-// Experience.jsx — WORK TIMELINE
+// Experience.jsx — TIMELINE (NO CARDS)
 //
-// HOW IT WORKS:
-//   - Reads the "experience" array from data.js
-//   - Renders each job as a card on a vertical timeline
-//   - The timeline is a thin vertical line with green dots
-//
-// HOW TO MODIFY:
-//   - Add/remove jobs in data.js — this component auto-adapts
-//   - To change the timeline color: edit "bg-emerald-500" on the dot
+// Each job is a list row separated by dividers, with a left-side
+// timeline rail. The card surfaces are gone; rows breathe via
+// generous vertical padding and a hairline divider between them.
 // ============================================================
 
 import { experience } from '../data';
@@ -16,57 +11,57 @@ import { Building2, Calendar } from 'lucide-react';
 
 export default function Experience() {
   return (
-    <div className="space-y-8">
-      {/* Section heading */}
+    <div className="space-y-10 max-w-4xl">
       <div>
-        <h2 className="text-2xl font-bold text-slate-50">Professional Experience</h2>
-        <p className="text-slate-400 mt-1">Where I've applied MLOps and data engineering in practice.</p>
+        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold">
+          Experience
+        </h2>
+        <p className="text-fg-dim mt-3 text-balance">
+          Where I've applied MLOps and data engineering in practice.
+        </p>
       </div>
 
-      {/* ─── TIMELINE ──────────────────────────────────── */}
-      <div className="relative">
-        {/* This div is the vertical line. "absolute" removes it from
-            normal flow, "left-4" positions it 16px from left. */}
-        <div className="absolute left-4 top-0 bottom-0 w-px bg-slate-800" />
+      <div className="relative pl-10">
+        {/* Vertical rail */}
+        <div className="absolute left-2.5 top-2 bottom-2 w-px bg-divider" aria-hidden="true" />
 
-        <div className="space-y-8">
+        <div className="space-y-12">
           {experience.map((exp, index) => (
-            <div key={index} className="relative pl-12">
-              {/* ─── TIMELINE DOT ────────────────────── */}
-              {/* The green circle on the vertical line */}
-              <div className="absolute left-2.5 top-1.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-slate-950" />
+            <div key={index} className="relative">
+              {/* Timeline dot — red with subtle glow */}
+              <div
+                className="absolute -left-[34px] top-1.5 w-3 h-3 rounded-full bg-accent ring-4 ring-bg"
+                style={{ boxShadow: '0 0 12px rgba(230, 57, 70, 0.55)' }}
+                aria-hidden="true"
+              />
 
-              {/* ─── JOB CARD ────────────────────────── */}
-              <div className="bg-slate-900/50 border border-slate-800/60 rounded-xl p-6 hover:border-slate-700/60 transition-colors">
-                {/* Top row: title + company on left, date on right */}
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-50">{exp.title}</h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Building2 className="w-4 h-4 text-emerald-400" />
-                      <span className="text-emerald-400 text-sm font-medium">{exp.company}</span>
-                      {exp.focus && (
-                        <span className="text-slate-600 text-xs">· {exp.focus}</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-slate-500 text-sm">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {exp.period}
-                  </div>
+              {/* Row 1: title + period */}
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="text-lg sm:text-xl font-semibold text-fg">{exp.title}</h3>
+                <div className="flex items-center gap-1.5 text-xs text-fg-mute">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {exp.period}
                 </div>
-
-                {/* Bullet points */}
-                <ul className="space-y-2 mt-4">
-                  {exp.points.map((point, i) => (
-                    <li key={i} className="flex gap-3 text-slate-300 text-sm leading-relaxed">
-                      {/* The green arrow bullet */}
-                      <span className="text-emerald-500 mt-1.5 shrink-0">▹</span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
               </div>
+
+              {/* Row 2: company + focus */}
+              <div className="mt-1 flex items-center gap-2 text-sm">
+                <Building2 className="w-3.5 h-3.5 text-sky-light" />
+                <span className="text-sky-light font-medium">{exp.company}</span>
+                {exp.focus && (
+                  <span className="text-fg-mute">· {exp.focus}</span>
+                )}
+              </div>
+
+              {/* Row 3: bullets (no card — just text) */}
+              <ul className="mt-4 space-y-2 max-w-2xl">
+                {exp.points.map((point, i) => (
+                  <li key={i} className="flex gap-3 text-fg-dim text-sm leading-relaxed">
+                    <span className="text-accent mt-1.5 shrink-0">▹</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

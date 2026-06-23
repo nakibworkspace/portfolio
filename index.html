@@ -9,6 +9,18 @@
     <title>Nakib Ahmed Raj — MLOps Engineer & PhD Aspirant</title>
     <!-- Favicon — edit public/favicon.svg to change the icon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Theme bootstrap: apply .dark to <html> BEFORE first paint
+         to avoid a flash of wrong theme on refresh. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          var theme = stored || system;
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <!-- React renders everything inside this div -->

@@ -1,78 +1,88 @@
 // ============================================================
-// Skills.jsx — CATEGORIZED SKILL GRID
+// Skills.jsx — DEEP-DIVE SKILLS PAGE
 //
-// HOW IT WORKS:
-//   - Reads the "skills" object from data.js
-//   - Object.entries() converts { "Category": ["skill1", ...] }
-//     into [ ["Category", ["skill1", ...]], ... ]
-//   - Each category becomes a card with an icon header + skill chips
+// Reached by clicking the root or any category node on the home
+// knowledge graph. The main attraction is a slow, infinite
+// marquee of skill chips scrolling right → left. Hover to pause;
+// click a chip to drill back into the home graph focused on that
+// category.
 //
-// HOW TO MODIFY:
-//   - Add/remove categories and skills in data.js
-//   - To change a category's icon: edit the categoryIcons map below
-//   - To change grid columns: edit the grid-cols classes
-//     (e.g., lg:grid-cols-2 for 2 columns instead of 3)
+// The category breakdown below the marquee is an inline list
+// (no cards) — dividers + colored dots + a flowing list of skills.
 // ============================================================
 
 import { skills } from '../data';
+import { ArrowLeft } from 'lucide-react';
+import SkillsMarquee from './SkillsMarquee';
 
-// Import icons — one per category
-// ← If you add a new category in data.js, import its icon here
-// ← and add it to categoryIcons below
-import { Workflow, Database, Cloud, ShieldCheck, Server } from 'lucide-react';
-
-// ─── CATEGORY → ICON MAP ───────────────────────────────────
-// The key MUST exactly match the category name in data.js
-const categoryIcons = {
-  "Orchestration": Workflow,
-  "Data Engineering": Database,
-  "Infrastructure": Cloud,
-  "ML Monitoring": ShieldCheck,
-  "Backend & APIs": Server,
-  // ← Add new ones here when you add categories in data.js
+const CATEGORY_DOT = {
+  'Orchestration':    '#e63946',
+  'Data Engineering': '#a8dadc',
+  'Infrastructure':   '#457b9d',
+  'ML Monitoring':    '#ff6b78',
+  'Backend & APIs':   '#f1faee',
 };
 
-export default function Skills() {
+export default function Skills({ onBack, onCategoryClick }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-12 max-w-4xl">
+
+      {/* Back link */}
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-fg-mute hover:text-accent-text transition-colors"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Back to overview
+      </button>
+
+      {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-50">Technical Skills</h2>
-        <p className="text-slate-400 mt-1">Tools and technologies I work with across the MLOps lifecycle.</p>
+        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold">
+          Technical Skills
+        </h2>
+        <p className="text-fg-dim mt-3 text-balance max-w-2xl">
+          Tools and technologies I work with across the MLOps lifecycle —
+          drifting slowly below. Hover to pause, click a chip to return
+          to the overview focused on that category.
+        </p>
       </div>
 
-      {/* ─── SKILLS GRID ─────────────────────────────────── */}
-      {/* sm:grid-cols-2 = 2 columns on small screens */}
-      {/* lg:grid-cols-3 = 3 columns on large screens */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(skills).map(([category, items]) => {
-          // Look up the icon for this category (fallback: Server)
-          const Icon = categoryIcons[category] || Server;
+      {/* MARQUEE — the centerpiece */}
+      <div className="space-y-3">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-sky-light">
+          Live marquee · slow drift
+        </p>
+        <SkillsMarquee onCategoryClick={onCategoryClick} />
+        <p className="text-[11px] uppercase tracking-[0.25em] text-sky-light">
+          Live marquee · slow drift
+        </p>
+      </div>
 
-          return (
-            <div key={category} className="bg-slate-900/50 border border-slate-800/60 rounded-xl p-6 hover:border-slate-700/60 transition-colors">
-              {/* Category header with icon in a green box */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-emerald-400" />
-                </div>
-                <h3 className="text-sm font-semibold text-slate-200">{category}</h3>
-              </div>
-
-              {/* Skill chips — flex-wrap means they flow to next line if needed */}
-              <div className="flex flex-wrap gap-2">
-                {items.map((skill, i) => (
-                  <span
-                    key={i}
-                    className="text-xs px-3 py-1.5 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/50 hover:border-emerald-500/30 hover:text-emerald-300 transition-colors"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
+      {/* Breakdown — labeled sections (no cards) */}
+      <ul className="divide-y divide-sky-dark/30 border-t border-sky-dark/30 mt-8">
+        {Object.entries(skills).map(([category, items]) => (
+          <li key={category} className="py-6 first:pt-2">
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: CATEGORY_DOT[category] || '#a8dadc' }}
+                aria-hidden="true"
+              />
+              <h3 className="text-lg font-semibold text-fg">{category}</h3>
+              <span className="text-xs text-fg-mute">({items.length})</span>
             </div>
-          );
-        })}
-      </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-sky-light">
+              {items.map((skill, i) => (
+                <span key={i} className="hover:text-fg transition-colors">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

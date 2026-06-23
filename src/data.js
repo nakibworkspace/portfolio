@@ -34,9 +34,9 @@ export const personalInfo = {
     linkedin: "https://www.linkedin.com/in/nakibahmedraj/",
     github: "https://github.com/nakibworkspace",
   
-    // Path to your CV file. Put your PDF in the "public" folder
-    // and make sure the filename matches (e.g., "public/resume.pdf")
-    cvLink: "/Users/nakibahmed/workspace/portfolio/public/Nakib Ahmed Raj- CV.pdf",
+    // Path to your CV file. Files in `public/` are served at the
+    // site root, so just use the filename.
+    cvLink: "/Nakib Ahmed Raj- CV.pdf",
   };
   
   
@@ -107,6 +107,34 @@ export const personalInfo = {
   };
   // ← To add a new category, just add a new key-value pair.
   // ← To change icons per category, see Skills.jsx (there's a map at the top).
+
+
+  // ─── DERIVED: SKILLS GRAPH DATA ─────────────────────────────
+  // 3-level hierarchy for the home knowledge base:
+  //   Root ("Skills") → category → individual skill
+  // Rendered as a force-directed graph with the root at center,
+  // categories on an inner ring, skills on an outer ring.
+  // NOTE: declared AFTER `skills` so we can safely reference it.
+  export const skillsGraph = (() => {
+    const nodes = [{ id: 'root:Skills', label: 'Skills', kind: 'root' }];
+    const links = [];
+    for (const [category, items] of Object.entries(skills)) {
+      const catId = `cat:${category}`;
+      nodes.push({ id: catId, label: category, kind: 'category' });
+      links.push({ source: 'root:Skills', target: catId });
+      for (const skill of items) {
+        const skillId = `s:${category}:${skill}`;
+        nodes.push({
+          id: skillId,
+          label: skill,
+          kind: 'skill',
+          category,
+        });
+        links.push({ source: catId, target: skillId });
+      }
+    }
+    return { nodes, links };
+  })();
   
   
   // ─── EDUCATION ─────────────────────────────────────────────
@@ -148,6 +176,7 @@ export const personalInfo = {
       title: "RAG-based Knowledge Retrieval System",
       description: "End-to-end Retrieval-Augmented Generation pipeline with vector embeddings, semantic search, and LLM-powered answer synthesis. Full observability with Langfuse.",
       tags: ["RAG", "LangChain", "FastAPI", "Langfuse", "Vector DB"],
+      // image: '/projects/rag-system.png',     // ← ADD a 16:9 image at public/projects/ to showcase
       github: "https://github.com/yourusername/rag-system",     // ← REPLACE
       demo: null,  // ← Add URL like "https://your-demo.vercel.app" if available
     },
@@ -172,13 +201,15 @@ export const personalInfo = {
   // ─── NAVIGATION TABS ───────────────────────────────────────
   // Controls the tab buttons in the navbar.
   // The "id" must match a key in the `sections` object in App.jsx.
+  // `hidden: true` removes the tab from the navbar but keeps the
+  // section reachable programmatically (e.g., from the home graph).
   // To add a new section: add a tab here, add a key in App.jsx,
   // and create the component file in src/components/.
   export const navTabs = [
     { id: "home",       label: "Home" },
     { id: "experience", label: "Experience" },
-    { id: "research",   label: "Research" },
-    { id: "skills",     label: "Skills" },
+    { id: "work",       label: "Work" },
+    { id: "skills",     label: "Skills", hidden: true },
     { id: "education",  label: "Education" },
-    { id: "projects",   label: "Projects" },
+    { id: "connect",    label: "Connect" },
   ];
