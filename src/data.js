@@ -17,14 +17,14 @@ export const personalInfo = {
     name: "Nakib Ahmed Raj",
   
     // This is the big text shown on the Home section
-    headline: "Bridging the gap between MLOps Engineering and Autonomous Research.",
+    // headline: "Bridging the gap between MLOps Engineering and Autonomous Research.",
   
     // Small green label above your name on Home
-    tagline: "Data/MLOps Engineer · PhD Aspirant",
+    tagline: "ML/DataOps Engineer · PhD Aspirant",
   
     role: "Junior Software Engineer",
     company: "Poridhi.io",
-    roleFocus: "MLOps & Data Pipeline Development",
+    roleFocus: "MLOps & Data Pipeline Development and AI Engineering",
     location: "Dhaka, Bangladesh",
   
     // ← REPLACE with your real email
@@ -38,6 +38,17 @@ export const personalInfo = {
     // site root, so just use the filename.
     cvLink: "/Nakib Ahmed Raj- CV.pdf",
   };
+
+
+  // ─── HOME OVERVIEW ────────────────────────────────────────
+  // Plain-text "about me" blurb shown on the Home page, just above
+  // the knowledge base graph. Keep it conversational and short.
+  // The array lets you split it into multiple paragraphs if you
+  // want; each entry renders as its own <p>.
+  export const overview = [
+    "Data/MLOps engineer. I build production ML pipelines, monitoring, and the streaming infra behind them.",
+    "Currently exploring VLMs for robot navigation. Looking to start a PhD.",
+  ];
   
   
   // ─── WORK EXPERIENCE ───────────────────────────────────────
@@ -101,9 +112,10 @@ export const personalInfo = {
   export const skills = {
     "Orchestration": ["Apache Airflow", "MLflow", "Langfuse", "Prefect"],
     "Data Engineering": ["Apache Spark", "Apache Kafka", "Apache Flink", "SQL"],
-    "Infrastructure": ["AWS (EC2, S3, SageMaker)", "Docker", "Pulumi (IaC)", "Terraform"],
+    "Infrastructure": ["AWS (EC2, S3, EKS, ECS)", "Docker", "Kubernetes", "Pulumi (IaC)"],
     "ML Monitoring": ["Evidently AI", "MLflow Tracking", "Custom Metrics", "Prometheus"],
-    "Backend & APIs": ["FastAPI", "PostgreSQL", "REST APIs", "GraphQL"],
+    "Backend & APIs": ["FastAPI", "PostgreSQL", "REST APIs"],
+    "Agentic Workflows": ["LangChain", "LangGraph", "Langfuse", "W&B"]
   };
   // ← To add a new category, just add a new key-value pair.
   // ← To change icons per category, see Skills.jsx (there's a map at the top).
@@ -173,26 +185,54 @@ export const personalInfo = {
   // Set "demo" to a URL if you have a live demo, or keep it null.
   export const projects = [
     {
-      title: "RAG-based Knowledge Retrieval System",
-      description: "End-to-end Retrieval-Augmented Generation pipeline with vector embeddings, semantic search, and LLM-powered answer synthesis. Full observability with Langfuse.",
-      tags: ["RAG", "LangChain", "FastAPI", "Langfuse", "Vector DB"],
-      // image: '/projects/rag-system.png',     // ← ADD a 16:9 image at public/projects/ to showcase
-      github: "https://github.com/yourusername/rag-system",     // ← REPLACE
-      demo: null,  // ← Add URL like "https://your-demo.vercel.app" if available
-    },
-    {
-      title: "Customer Churn Prediction Pipeline",
-      description: "Full ML pipeline from data ingestion to model serving. Includes feature engineering, experiment tracking with MLflow, and data drift monitoring with Evidently AI.",
-      tags: ["MLflow", "Evidently", "Scikit-learn", "FastAPI", "Docker"],
-      github: "https://github.com/yourusername/churn-prediction", // ← REPLACE
+      title: "Credit Card Approval Prediction",
+      description: "Streaming data pipeline for real-time fraud scoring using Apache Kafka for event ingestion and Apache Flink for windowed computation and anomaly detection.",
+      tags: ["Kafka", "Flink", "Python", "Docker", "AWS", "Github Action"],
+      github: "https://github.com/nakibworkspace/card-approval-prediction-mlops",  // ← REPLACE
       demo: null,
     },
     {
-      title: "Real-time Fraud Detection with Kafka & Flink",
-      description: "Streaming data pipeline for real-time fraud scoring using Apache Kafka for event ingestion and Apache Flink for windowed computation and anomaly detection.",
-      tags: ["Kafka", "Flink", "Python", "Docker", "AWS"],
+      title: "Serving NLP and CV model using FastAPI on AWS EC2",
+      description: "Serving two different services on AWS using FastAPI for a R&D project",
+      tags: ["NLP", "CV", "FastAPI", "Docker", "AWS"],
       github: "https://github.com/yourusername/fraud-detection",  // ← REPLACE
       demo: null,
+    },
+    {
+      title: "Learning Minitorch",
+      description: "Building a Machine Learning Framework for matrix computation",
+      tags: ["Python", "AutoGrad"],
+      github: "https://github.com/nakibworkspace/minitorch-fundamentals",
+      demo: null,
+    },
+    {
+      title: "Data Lake and Warehouse Management",
+      description: "A R&D project for high volume data to store and serve using Data Lake and Warehousing",
+      tags: ["Postgres", "AWS S3", "Clickhouse", "dbt", "Prometheus", "Grafana", "Makefile"],
+      github: "https://github.com/nakibworkspace/datalake-management/tree/main",  // ← REPLACE
+      demo: null,
+    },
+    {
+      title: "Chatbot Observability with Langfuse",
+      description: "Integrating Langfuse to a basic chatbot to trace the conversation, token counts, and cost management. Used agentic approach such as Langfuse Skills to debug or any sort of queries done in natural language",
+      tags: ["Langfuse", "Langchain"],
+      github: "https://github.com/nakibworkspace/chatbot-observability",  // ← REPLACE
+      demo: null,
+    },
+    {
+      title: "Fraud Detection Pipeline",
+      description: "Full ML pipeline from data ingestion to model serving. Includes feature engineering, experiment tracking with MLflow, and data drift monitoring with Evidently AI.",
+      tags: ["MLflow", "Evidently", "Scikit-learn", "FastAPI", "Docker", "Airflow"],
+      github: "https://github.com/nakibworkspace/Fraud-detection-pipeline", // ← REPLACE
+      demo: null,
+    },
+    {
+    title: "RAG-based Knowledge Retrieval System",
+    description: "End-to-end Retrieval-Augmented Generation pipeline with vector embeddings, semantic search, and LLM-powered answer synthesis. Deep dived into advance RAG systems such as chunking strategies, indexing, Retrievals, Agentic RAG, CRAG as well",
+    tags: ["RAG", "LangChain", "FastAPI", "Langfuse", "Vector DB"],
+    // image: '/projects/rag-system.png',     // ← ADD a 16:9 image at public/projects/ to showcase
+    github: "https://github.com/nakibworkspace/rag-labs",     // ← REPLACE
+    demo: null,  // ← Add URL like "https://your-demo.vercel.app" if available
     },
     // ← ADD MORE PROJECTS HERE. Copy any object above and change the values.
   ];

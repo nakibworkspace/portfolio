@@ -15,7 +15,7 @@
 // ============================================================
 
 import { lazy, Suspense } from 'react';
-import { personalInfo, education, research } from '../data';
+import { personalInfo, education, research, overview } from '../data';
 import Reveal from './Reveal';
 import CategoryList from './CategoryList';
 
@@ -35,9 +35,9 @@ export default function Home({ onCategoryClick }) {
         </p>
       </Reveal>
 
-      {/* NAME */}
+      {/* NAME — pixel hero with fire glow */}
       <Reveal delay={80}>
-        <h1 className="mt-5 text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-fg leading-[1.05]">
+        <h1 className="mt-5 font-display pixel-hero text-6xl sm:text-7xl md:text-8xl leading-none">
           {personalInfo.name}
         </h1>
       </Reveal>
@@ -56,14 +56,23 @@ export default function Home({ onCategoryClick }) {
 
       {/* INLINE META CHIPS */}
       <Reveal delay={320}>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-fg-mute">
-          <span>📍 {personalInfo.location}</span>
-          <span className="text-sky-dark" aria-hidden="true">·</span>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-fg-mute whitespace-nowrap">
           <span>💼 {personalInfo.role} <span className="text-accent-text">@ {personalInfo.company}</span></span>
           <span className="text-sky-dark" aria-hidden="true">·</span>
-          <span>🎓 {edu.degree.split(' ').slice(0, 3).join(' ')}</span>
+          <span>🎓 {edu.degree}</span>
           <span className="text-sky-dark" aria-hidden="true">·</span>
           <span>🔬 {res.title.split(':')[0]}</span>
+          <span className="text-sky-dark" aria-hidden="true">·</span>
+          <span>📍 {personalInfo.location}</span>
+        </div>
+      </Reveal>
+
+      {/* OVERVIEW — pixel-font blurb about me */}
+      <Reveal delay={360}>
+        <div className="mt-8 max-w-2xl mx-auto text-center space-y-2 font-display text-sm sm:text-base text-fg-dim leading-snug">
+          {overview.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
         </div>
       </Reveal>
 

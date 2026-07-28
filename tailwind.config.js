@@ -7,6 +7,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        display: ['"Jersey 10"', 'sans-serif'],
       },
       // ── Theme tokens ─────────────────────────────────────
       // Every color resolves to a CSS variable defined in :root

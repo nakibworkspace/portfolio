@@ -253,7 +253,7 @@ export default function SkillsGraph({ onCategoryClick, height = 560 }) {
         d.kind === 'root' ? 700 : d.kind === 'category' ? 600 : 400
       )
       .attr('pointer-events', 'none')
-      .text((d) => d.label);
+      .text((d) => (d.kind === 'root' ? '' : d.label));
 
     // Skill labels are tiny — the user said "keep that" so we
     // render all of them, no hover gating.
