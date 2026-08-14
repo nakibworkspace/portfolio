@@ -5,15 +5,14 @@
 // re-renders whenever the `dark` class on <html> toggles.
 //
 // Why this exists:
-//   Some components (notably the D3 SkillsGraph) need to know
-//   when the theme changes so they can re-read CSS variables
-//   and re-apply colors to the SVG. Reading `localStorage` in
-//   a one-shot useEffect is not enough — we need a reactive
-//   signal.
+//   Any future component that needs to react to theme changes
+//   (e.g., to re-read CSS variables and re-apply colors) can
+//   use this hook. Reading `localStorage` in a one-shot
+//   useEffect is not enough — we need a reactive signal.
 //
 // Usage:
 //   const theme = useThemeVariant();
-//   useEffect(() => { /* rebuild SVG when theme changes */ },
+//   useEffect(() => { /* rebuild when theme changes */ },
 //             [theme]);
 // ============================================================
 

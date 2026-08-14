@@ -8,35 +8,26 @@ import { navTabs } from './data';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Experience from './components/Experience';
-import ResearchProjects from './components/ResearchProjects';
-import Skills from './components/Skills';
+import Research from './components/Research';
+import Projects from './components/Projects';
 import Education from './components/Education';
 import Connect from './components/Connect';
 
 // ─── SECTION MAP ───────────────────────────────────────────
-// `skills` is intentionally NOT here — it's still reachable via
-// the home knowledge graph, but it needs an `onBack` callback so
-// it lives below the map for conditional rendering.
+// All sections live behind the navbar tabs. Home is rendered
+// with its own dedicated call site (no props needed anymore —
+// the old onCategoryClick / drill-in flow is gone).
 const sections = {
   home:       Home,
   experience: Experience,
-  work:       ResearchProjects,   // merged research + projects
+  research:   Research,
+  projects:   Projects,
   education:  Education,
   connect:    Connect,
 };
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
-
-  const handleHomeDrillIn = () => {
-    setActiveTab('skills');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleHomeConnect = () => {
-    setActiveTab('connect');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <div className="min-h-screen bg-bg text-fg font-sans">
@@ -49,19 +40,10 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
         <div key={activeTab} className="animate-fadeIn">
-          {activeTab === 'skills' ? (
-            <Skills
-              onBack={() => setActiveTab('home')}
-              onCategoryClick={handleHomeDrillIn}
-            />
-          ) : activeTab === 'home' ? (
-            <Home onCategoryClick={handleHomeDrillIn} />
-          ) : (
-            (() => {
-              const Section = sections[activeTab];
-              return Section ? <Section /> : null;
-            })()
-          )}
+          {(() => {
+            const Section = sections[activeTab];
+            return Section ? <Section /> : null;
+          })()}
         </div>
       </main>
     </div>

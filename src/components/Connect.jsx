@@ -1,195 +1,118 @@
 // ============================================================
-// Connect.jsx — CONTACT (BANNER LAYOUT, NO CARDS)
+// Connect.jsx — EDITORIAL CLOSE
 //
-// A single-page layout that uses a full-width email banner,
-// inline social links, a horizontal metadata strip, and a
-// primary CV download CTA. No card surfaces anywhere.
+// The page reads as a closing paragraph rather than a contact
+// form. Five units separated by hairline dividers:
+//   1. What I'm open to right now (one paragraph)
+//   2. Email — stacked label + URL, full row
+//   3. GitHub — same pattern
+//   4. LinkedIn — same pattern
+//   5. CV — quiet inline text link
+// Footer line: location + role, away from the main flow.
+//
+// No buttons, no scale animations, no shadow pills, no
+// "I read every message" reassurance copy. Each row breathes.
 // ============================================================
 
-import { useState } from 'react';
 import { personalInfo } from '../data';
-import {
-  Mail, Github, Linkedin, MapPin, Copy, Check,
-  Briefcase, ArrowUpRight, Download,
-} from 'lucide-react';
-
-function CopyEmail({ email }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = email;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      className="
-        group w-full text-left
-        py-5
-        flex items-center gap-4
-        transition-colors
-      "
-      aria-label={`Copy email address ${email}`}
-    >
-      <Mail className="w-5 h-5 text-accent-text shrink-0" />
-      <span className="flex-1 min-w-0 text-lg sm:text-xl text-fg font-medium truncate">
-        {email}
-      </span>
-      <span className="shrink-0 flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-fg-mute group-hover:text-accent-text transition-colors">
-        {copied ? (
-          <>
-            <Check className="w-3.5 h-3.5" />
-            Copied
-          </>
-        ) : (
-          <>
-            <Copy className="w-3.5 h-3.5" />
-            Copy
-          </>
-        )}
-      </span>
-    </button>
-  );
-}
-
-function SocialLink({ href, icon: Icon, label, handle }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="
-        group inline-flex items-center gap-3
-        py-3
-        transition-colors
-      "
-    >
-      <Icon className="w-4 h-4 text-sky-light group-hover:text-accent-text transition-colors" />
-      <span className="text-fg-dim group-hover:text-fg text-sm font-medium transition-colors">
-        {label}
-      </span>
-      <span className="text-fg-mute text-sm truncate">— {handle}</span>
-      <ArrowUpRight className="w-3.5 h-3.5 text-fg-mute group-hover:text-accent-text group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all ml-auto" />
-    </a>
-  );
-}
+import { ArrowDownToLine } from 'lucide-react';
 
 export default function Connect() {
   return (
     <div className="max-w-3xl">
 
-      {/* HEADER */}
-      <div>
-        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold">
+      {/* UNIT 1 — what I'm open to */}
+      <section className="space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-fg tracking-tight">
           Connect
         </h2>
-
-        <h3 className="mt-6 text-3xl sm:text-4xl font-bold text-fg tracking-tight">
-          Let's build something.
-        </h3>
-        <div className="mt-4 h-px w-24 accent-line-multi" aria-hidden="true" />
-
-        <p className="mt-6 text-fg-dim leading-relaxed">
-          Open to research collaborations, PhD conversations, and interesting
-          MLOps / data engineering roles. The fastest way to reach me is
-          email — I usually reply within a day.
+        <p className="text-base text-fg-dim leading-relaxed text-balance max-w-2xl">
+          I'm currently considering PhD programs in software-engineering
+          research (the ML / NLP / LLM-agents-for-SE direction), and
+          select MLOps or data-engineering consulting work. If that's
+          you, I'd like to hear from you.
         </p>
-      </div>
+      </section>
 
-      {/* EMAIL BANNER — full-width, no card */}
-      <div className="mt-10">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-sky-light mb-3">
-          Email
-        </p>
-        <CopyEmail email={personalInfo.email} />
-      </div>
+      <Divider />
 
-      {/* SOCIALS — inline rows, no cards */}
-      <div className="mt-10 space-y-1">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-sky-light mb-3">
-          Find me on
-        </p>
-        <div className="flex flex-col">
-          {personalInfo.github && (
-            <SocialLink
-              href={personalInfo.github}
-              icon={Github}
-              label="GitHub"
-              handle={personalInfo.github.replace('https://', '')}
-            />
-          )}
-          {personalInfo.linkedin && (
-            <SocialLink
-              href={personalInfo.linkedin}
-              icon={Linkedin}
-              label="LinkedIn"
-              handle={personalInfo.linkedin.replace('https://', '')}
-            />
-          )}
-        </div>
-      </div>
+      {/* UNIT 2 — email */}
+      <Channel label="Email" url={personalInfo.email} href={`mailto:${personalInfo.email}`} />
 
-      {/* METADATA STRIP — inline, no cards */}
-      <div className="mt-12">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-y-3 gap-x-8 text-sm">
-          <span className="flex items-center gap-2 text-fg-dim">
-            <MapPin className="w-4 h-4 text-sky-light" />
-            {personalInfo.location}
-          </span>
-          <span className="hidden sm:inline text-sky-dark" aria-hidden="true">·</span>
-          <span className="flex items-center gap-2 text-fg-dim">
-            <Briefcase className="w-4 h-4 text-sky-light" />
-            {personalInfo.role} <span className="text-accent-text">@ {personalInfo.company}</span>
-          </span>
-        </div>
-      </div>
+      <Divider />
 
-      {/* CV DOWNLOAD — primary CTA, only place to grab the resume */}
-      <div className="mt-10">
+      {/* UNIT 3 — GitHub */}
+      {personalInfo.github && (
+        <Channel
+          label="GitHub"
+          url="github.com/nakibworkspace"
+          href={personalInfo.github}
+        />
+      )}
+
+      <Divider />
+
+      {/* UNIT 4 — LinkedIn */}
+      {personalInfo.linkedin && (
+        <Channel
+          label="LinkedIn"
+          url="linkedin.com/in/nakibahmedraj"
+          href={personalInfo.linkedin}
+        />
+      )}
+
+      <Divider />
+
+      {/* UNIT 5 — CV */}
+      <section className="py-6">
         <a
           href={personalInfo.cvLink}
           download
-          className="
-            group inline-flex items-center gap-2
-            px-6 py-3
-            bg-accent hover:bg-accent/90
-            text-white font-semibold text-sm uppercase tracking-[0.15em]
-            rounded-full
-            shadow-lg shadow-accent/20
-            hover:shadow-accent/40
-            transition-all duration-200
-            hover:scale-[1.02]
-            active:scale-95
-          "
-          aria-label="Download CV"
+          className="group inline-flex items-center gap-2 text-sm text-fg hover:text-accent-text transition-colors"
+          aria-label="Download CV as PDF"
         >
-          <Download className="w-4 h-4" />
-          Download CV
+          <span className="text-[11px] uppercase tracking-[0.25em] text-sky-light font-semibold w-20 shrink-0">
+            CV
+          </span>
+          <span className="underline underline-offset-4 decoration-divider group-hover:decoration-accent-text">
+            Download CV
+          </span>
+          <span className="text-fg-mute text-xs uppercase tracking-[0.2em]">
+            (PDF)
+          </span>
+          <ArrowDownToLine className="w-3.5 h-3.5 text-fg-mute group-hover:text-accent-text transition-colors" />
         </a>
-        <p className="mt-3 text-xs text-fg-mute max-w-lg">
-          A single PDF — education, experience, selected projects. Updated as
-          of the current semester.
-        </p>
-      </div>
+      </section>
 
-      <p className="mt-10 text-xs text-fg-mute max-w-lg">
-        Prefer a quick intro? Drop a line with what you're working on and
-        what you'd like to chat about — I read every message.
+      <Divider />
+
+      {/* FOOTER — location + role, away from the channels */}
+      <p className="pt-6 text-xs text-fg-mute">
+        {personalInfo.location} · {personalInfo.role}{' '}
+        <span className="text-accent-text">@ {personalInfo.company}</span>
       </p>
     </div>
+  );
+}
+
+function Divider() {
+  return <div className="h-px w-full bg-divider" aria-hidden="true" />;
+}
+
+function Channel({ label, url, href }) {
+  return (
+    <section className="py-6 flex flex-col sm:flex-row sm:items-baseline sm:gap-x-6 gap-y-2">
+      <span className="text-[11px] uppercase tracking-[0.25em] text-sky-light font-semibold shrink-0 sm:w-20">
+        {label}
+      </span>
+      <a
+        href={href}
+        target={href.startsWith('mailto:') ? undefined : '_blank'}
+        rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+        className="text-base text-fg hover:text-accent-text transition-colors break-all"
+      >
+        {url}
+      </a>
+    </section>
   );
 }
