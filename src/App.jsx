@@ -3,6 +3,7 @@
 // ============================================================
 
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { navTabs } from './data';
 
 import Navbar from './components/Navbar';
@@ -46,6 +47,8 @@ export default function App() {
           })()}
         </div>
       </main>
+
+      <Analytics />
     </div>
   );
 }
