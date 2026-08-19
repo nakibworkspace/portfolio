@@ -42,7 +42,7 @@ export const personalInfo = {
 
     // Path to your CV file. Files in `public/` are served at the
     // site root, so just use the filename.
-    cvLink: "/Nakib Ahmed Raj- CV.pdf",
+    cvLink: "/projects/NakibAhmedRaj_CV.pdf",
   };
 
 
