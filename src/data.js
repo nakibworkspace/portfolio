@@ -19,7 +19,7 @@ export const personalInfo = {
     // Big text shown on the Home section, below the name.
     // Tailored for both PhD PIs (research direction) and
     // industry MLOps folks (production scope).
-    headline: "MLOps engineer building the production plumbing under ML systems. Pipelines, observability, streaming. Looking to apply ML, NLP, and LLM agents to software engineering research.",
+    headline: "MLOps engineer. I build the production plumbing under ML systems: pipelines, observability, streaming.",
 
     // Small uppercase label above your name on Home
     tagline: "ML/DataOps Engineer · PhD Aspirant",
@@ -52,7 +52,7 @@ export const personalInfo = {
   // The array lets you split it into multiple paragraphs if you
   // want; each entry renders as its own <p>.
   export const overview = [
-    "Data/MLOps engineer. I build production ML pipelines, monitoring, and the streaming infra behind them.",
+    "I work at the intersection of agentic systems and production ML. On the systems side: streaming pipelines with self-monitoring, drift detection wired into the same observability surface as model performance, and infrastructure that ships reproducibly through IaC. On the agentic side: workflows where agents write, validate, and execute against real data, not demos.",
     "Research interests span ML, deep learning, and NLP applied to software engineering. Code generation, code review, program repair, and LLM agents for development workflows.",
   ];
 
@@ -282,6 +282,13 @@ export const personalInfo = {
       github: null,
       demo: null,
       scope: "Internal demo",
+    },
+    {
+      title: "Ride-Sharing Natural Language Analytics",
+      description: "Agentic analytics layer for ride-sharing data. Ask a question in plain English — \"traffic in Airport\", \"top 5 destinations by rides\", \"cancellation rate\" — and an AI agent writes the SQL, validates it, runs it against a Postgres warehouse, picks the right chart, and ships a live Metabase dashboard. Built with Puku CLI skills for the agent orchestration, PostgreSQL as the warehouse, and Metabase for the front-end dashboard surface.",
+      tags: ["Puku CLI", "Agentic AI", "PostgreSQL", "Metabase", "NL2SQL", "Analytics"],
+      github: "https://github.com/nakibworkspace/Natural-Language-Analytics/tree/main",
+      demo: null,
     },
     // ← ADD MORE PROJECTS HERE. Copy any object above and change the values.
   ];

@@ -37,23 +37,23 @@ export default function Home() {
       <div className="mt-6 mx-auto h-px w-32 accent-line-multi" aria-hidden="true" />
 
       {/* HEADLINE — now defined in data.js */}
-      <p className="mt-7 max-w-xl text-balance text-lg sm:text-xl text-fg-dim leading-relaxed">
+      <p className="mt-7 max-w-2xl text-balance text-xl sm:text-2xl text-fg font-medium leading-snug">
         {personalInfo.headline}
       </p>
 
       {/* META — one line, plain text, no emoji chips */}
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-fg-mute whitespace-nowrap">
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-base text-fg-dim whitespace-nowrap">
         <span>{personalInfo.role} <span className="text-accent-text">@ {personalInfo.company}</span></span>
         <span className="text-sky-dark" aria-hidden="true">·</span>
-        <span>{edu.degree}</span>
+        <span>{edu.degree} <span className="text-accent-text">@ {edu.institution.match(/\(([^)]+)\)/)?.[1] || 'CUET'}</span></span>
         <span className="text-sky-dark" aria-hidden="true">·</span>
         <span>{personalInfo.researchDirection}</span>
         <span className="text-sky-dark" aria-hidden="true">·</span>
         <span>{personalInfo.location}</span>
       </div>
 
-      {/* OVERVIEW — pixel-font blurb about me */}
-      <div className="mt-8 max-w-2xl mx-auto text-center space-y-2 font-display text-sm sm:text-base text-fg-dim leading-snug">
+      {/* OVERVIEW — body-font blurb about me (pixel font was unreadable at body size) */}
+      <div className="mt-8 max-w-2xl mx-auto text-center space-y-3 font-sans text-base sm:text-lg text-fg-dim leading-relaxed">
         {overview.map((para, i) => (
           <p key={i}>{para}</p>
         ))}
@@ -99,11 +99,11 @@ export default function Home() {
                 </div>
 
                 {/* Skills — inline flowing list */}
-                <p className="text-sm text-fg-dim leading-relaxed">
+                <p className="text-base text-fg leading-relaxed">
                   {items.map((skill, i) => (
                     <span key={i}>
-                      <span className="text-fg-mute">{skill}</span>
-                      {i < items.length - 1 && <span className="text-fg-mute/60"> · </span>}
+                      <span className="text-fg">{skill}</span>
+                      {i < items.length - 1 && <span className="text-fg-mute/70"> · </span>}
                     </span>
                   ))}
                 </p>

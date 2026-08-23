@@ -40,7 +40,7 @@ export default function App() {
       />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-        <div key={activeTab} className="animate-fadeIn">
+        <div className="animate-fadeIn">
           {(() => {
             const Section = sections[activeTab];
             return Section ? <Section /> : null;

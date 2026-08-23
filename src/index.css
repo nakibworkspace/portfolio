@@ -33,19 +33,19 @@
   --bg:           #0d1b2a;
   --bg-elevated:  #11253c;
   --fg:           #f1faee;
-  --fg-dim:       rgba(241, 250, 238, 0.72);
-  --fg-mute:      rgba(241, 250, 238, 0.45);
+  --fg-dim:       #c8d6d0;
+  --fg-mute:      #8aa8b6;
 
   --accent:        #e63946;
   --accent-soft:   rgba(230, 57, 70, 0.14);
   --accent-border: rgba(230, 57, 70, 0.30);
   --accent-text:   #ff6b78;
 
-  --sky:        #457b9d;
+  --sky:        #6a9bb8;
   --sky-light:  #a8dadc;
   --sky-dark:   #345a78;
 
-  --divider: rgba(241, 250, 238, 0.10);
+  --divider: rgba(241, 250, 238, 0.12);
   --code-bg:  rgba(241, 250, 238, 0.05);
 }
 
@@ -68,13 +68,14 @@
   }
 }
 
-/* 4. Fade-in animation — plays every time you switch to a new tab */
+/* 4. Fade-in animation — fast, short, ends crisp. We rely on
+      the parent keying the wrapper so this only fires on tab change. */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .animate-fadeIn {
-  animation: fadeIn 0.35s ease-out forwards;
+  animation: fadeIn 0.18s ease-out both;
 }
 
 /* 5. Hide scrollbar (used by Navbar overflow) */
