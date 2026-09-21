@@ -9,7 +9,7 @@
 // ============================================================
 
 import { useEffect } from 'react';
-import { X, Sparkles } from 'lucide-react';
+import { X } from 'lucide-react';
 import { ragPocs } from '../data';
 
 export default function RagPocModal({ open, onClose }) {
@@ -53,7 +53,6 @@ export default function RagPocModal({ open, onClose }) {
         {/* HEADER */}
         <div className="sticky top-0 z-10 flex items-center justify-between gap-3 px-5 sm:px-8 py-4 bg-bg/90 backdrop-blur border-b border-divider rounded-t-xl">
           <div className="flex items-center gap-2 min-w-0">
-            <Sparkles className="w-4 h-4 text-sky-light shrink-0" />
             <h2 className="text-sm sm:text-base font-semibold text-fg truncate">
               RAG PoCs — explored techniques
             </h2>
