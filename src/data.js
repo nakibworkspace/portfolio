@@ -42,7 +42,7 @@ export const personalInfo = {
 
     // Path to your CV file. Files in `public/` are served at the
     // site root, so just use the filename.
-    cvLink: "/projects/NakibAhmedRaj_CV.pdf",
+    cvLink: "/projects/Nakib_Ahmed_cv.pdf",
   };
 
 
@@ -222,6 +222,92 @@ export const personalInfo = {
   ];
 
 
+  // ─── RAG PoCs — explored techniques ──────────────────────
+  // Ordered from basic RAG → advanced. Rendered inside the
+  // RagPocModal as a serial gallery of diagrams with short
+  // explanations of what each one was scoped to solve.
+  export const ragPocs = [
+    {
+      title: "RAG Architecture",
+      image: "/assets/RAG/rag-architecture-overview.svg",
+      description:
+        "Baseline RAG pipeline: PDF loader → text splitter → embeddings → vector store → retriever → augmentation → LLM. The reference architecture I keep coming back to whenever I scope a new PoC. everything else in this gallery is a variant or extension of this flow.",
+    },
+    {
+      title: "PDF Indexing — Two-Tier Summary + Detail Stores",
+      image: "/assets/RAG/pdf-indexing-two-tier-summary-and-detail-stores.svg",
+      description:
+        "Index a long PDF twice: once at page level via map_reduce summarization (Summary Store, 1 vector/page for fast recall), and once at chunk level (Detail Store, N vectors/page for precise answers). The retriever picks top-K pages from the Summary Store, then drills into the Detail Store of those pages. Cuts token cost vs. indexing everything at full resolution.",
+    },
+    {
+      title: "PDF Indexing — Document Title Prepending",
+      image: "/assets/RAG/pdf-indexing-document-title-prepending.svg",
+      description:
+        "LLM generates a document title once (tiktoken-truncated to 4000 tokens), then prepends it as a header to every chunk before embedding. Solves the classic 'orphan chunk' problem where a chunk about revenue figures loses all context if the document title isn't nearby. Cheap, surprisingly effective.",
+    },
+    {
+      title: "PDF Indexing — Proposition Chunking",
+      image: "/assets/RAG/pdf-indexing-proposition-chunking.svg",
+      description:
+        "Two-LLM pipeline: LLM #1 decomposes each chunk into atomic self-contained propositions, LLM #2 grades them on accuracy + clarity and drops weak ones. Surviving propositions are embedded instead of raw paragraphs. Boosts retrieval precision on technical/legal text where one paragraph mixes several facts.",
+    },
+    {
+      title: "Self-RAG / Corrective — Decide-Retrieve-Filter-Candidates",
+      image: "/assets/RAG/self-rag-corrective-decide-retrieve-filter-candidates.svg",
+      description:
+        "7-step pipeline: LLM-as-Judge first decides whether retrieval is even needed. If yes, retrieve top-k, filter by relevance, generate one candidate per chunk, score each on (support, utility), pick the best. Falls back to parametric memory or no-context generation when no chunk clears the threshold. Reduces hallucinations on questions that don't need external knowledge.",
+    },
+    {
+      title: "Multi-Query Transformation — Rewrite / Step-Back / Sub-Query",
+      image: "/assets/RAG/multi-query-transformation-rewrite-stepback-subquery.svg",
+      description:
+        "Generate 4 variants of the user query (rewritten, step-back abstracted, sub-queries decomposed), retrieve ~60–80 detailed chunks across all variants, then merge into one final answer. Improves recall on ambiguous or compound questions where a single query misses relevant chunks.",
+    },
+    {
+      title: "HyDE — Hypothetical Document Embeddings",
+      image: "/assets/RAG/hyde-hypothetical-document-embeddings.svg",
+      description:
+        "Instead of embedding the raw user query, prompt an LLM to write a hypothetical answer, embed that, then retrieve. The hypothesis sits in the same embedding space as real documents, so cosine similarity works much better than query-vs-chunk matching. Strong for short, vague queries.",
+    },
+    {
+      title: "GraphRAG — 1-Hop Graph Walk",
+      image: "/assets/RAG/graphrag-1hop-walk.svg",
+      description:
+        "Build an entity/relation graph over the corpus and traverse it for relational questions ('Who is Aristotle?' → Plato via teacher edge). Standard RAG only sees local chunks; graph walks expose multi-hop reasoning that would otherwise need an LLM to stitch together.",
+    },
+    {
+      title: "CRAG — Corrective RAG with Web Fallback",
+      image: "/assets/RAG/crag-corrective-rag-with-web-fallback.svg",
+      description:
+        "Retriever feeds an LLM Judge; the judge branches into three paths — confident best doc, mix doc + web search, or pure web fallback. Handles queries where the index is stale or wrong by actively correcting itself with live search. Practical pattern for production where knowledge drift is a real risk.",
+    },
+    {
+      title: "Retrieval Reranking — LLM Judge vs Cross-Encoder",
+      image: "/assets/RAG/retrieval-reranking-llm-judge-vs-cross-encoder.svg",
+      description:
+        "Two reranking strategies compared on the same top-15 candidates: an LLM-as-Judge using RatingScore (~1s per pair, slow but flexible) vs a Cross-Encoder like ms-marco-MiniLM-L-6-v2 (~10ms per pair, fast but generic). Cross-encoder wins on latency, LLM judge wins when relevance requires reasoning.",
+    },
+    {
+      title: "Retrieval Reranking — LLM-as-Judge with Feedback Log",
+      image: "/assets/RAG/retrieval-reranking-llm-as-judge-with-feedback-log.svg",
+      description:
+        "LLM judge scores candidates on relevance (1–5) and quality (1–5), picks the adjusted top doc, and logs the full judgment to feedback.jsonl. The log becomes the training signal for the nightly retraining loop.",
+    },
+    {
+      title: "Feedback Loop — Nightly CRON Retraining",
+      image: "/assets/RAG/feedback-loop-nightly-cron-retraining.svg",
+      description:
+        "Every night a CRON job reads feedback.jsonl, filters for high-rated QA pairs, and re-indexes them into the AI Brain Index. Production queries from tomorrow silently benefit from yesterday's answers that users (or evaluators) approved. Closes the loop between retrieval quality and human feedback.",
+    },
+    {
+      title: "Agentic RAG — ReAct Loop with Tools",
+      image: "/assets/RAG/agentic-rag-react-loop-with-tools.svg",
+      description:
+        "ReAct agent instead of a single retrieve-then-answer chain. The agent reasons step-by-step and calls tools as needed: doc_search for retrieval, calculator for arithmetic, web_search for live facts. Each tool call is observed and the loop continues until the agent emits a Final Answer. Most flexible but also the most expensive — scoped to queries that justify it.",
+    },
+  ];
+
+
   // ─── PROJECTS / GITHUB REPOS ───────────────────────────────
   // Each object = one project card.
   // Set "demo" to a URL if you have a live demo, or keep it null.
@@ -274,6 +360,8 @@ export const personalInfo = {
       tags: ["RAG", "LangChain", "FastAPI", "Langfuse", "Vector DB"],
       github: "https://github.com/nakibworkspace/rag-labs",
       demo: null,
+      image: "/assets/RAG/rag-architecture-overview.svg",
+      preview: "ragPocs",
     },
     {
       title: "FastAPI + Postgres + Alembic Migration Demo",

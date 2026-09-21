@@ -13,6 +13,7 @@ import Research from './components/Research';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Connect from './components/Connect';
+import RagPocModal from './components/RagPocModal';
 
 // ─── SECTION MAP ───────────────────────────────────────────
 // All sections live behind the navbar tabs. Home is rendered
@@ -29,6 +30,11 @@ const sections = {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
+  // `previewKey` is the string from a project's `preview` field
+  // (e.g. "ragPocs"). Non-null means a preview modal is open.
+  const [previewKey, setPreviewKey] = useState(null);
+
+  const closePreview = () => setPreviewKey(null);
 
   return (
     <div className="min-h-screen bg-bg text-fg font-sans">
@@ -43,10 +49,21 @@ export default function App() {
         <div className="animate-fadeIn">
           {(() => {
             const Section = sections[activeTab];
-            return Section ? <Section /> : null;
+            if (!Section) return null;
+            // Projects needs the preview handler; others ignore it.
+            return activeTab === 'projects'
+              ? <Section onPreview={setPreviewKey} />
+              : <Section />;
           })()}
         </div>
       </main>
+
+      {/* Preview modals — keyed by `preview` string so adding more
+          is just a new branch here. */}
+      <RagPocModal
+        open={previewKey === 'ragPocs'}
+        onClose={closePreview}
+      />
 
       <Analytics />
     </div>

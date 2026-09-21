@@ -4,15 +4,17 @@
 // Flat list separated by hairline dividers. Project cards use
 // a grid but each cell is transparent with only a divider on
 // hover for visual separation. Projects with an `image` field
-// render a 16:9 hero image above the title.
+// render a 16:9 hero image above the title. Projects with a
+// `preview` field render a Preview button that triggers a
+// caller-supplied handler.
 // ============================================================
 
 import { projects } from '../data';
 import {
-  Github, ExternalLink, FolderGit2, Lock,
+  Github, ExternalLink, FolderGit2, Lock, Play,
 } from 'lucide-react';
 
-export default function Projects() {
+export default function Projects({ onPreview }) {
   return (
     <div className="space-y-10 max-w-5xl">
 
@@ -34,14 +36,14 @@ export default function Projects() {
             key={index}
             className="group py-6 first:pt-2"
           >
-            {/* Optional hero image */}
+            {/* Small inline thumbnail — for projects that ship a hero */}
             {project.image && (
-              <figure className="mb-4 overflow-hidden rounded-lg border border-divider bg-bg-elevated">
+              <figure className="mb-4 overflow-hidden rounded-md border border-divider bg-bg-elevated max-w-[160px]">
                 <img
                   src={project.image}
                   alt={project.title}
                   loading="lazy"
-                  className="w-full max-h-[280px] object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="w-full h-auto"
                 />
               </figure>
             )}
@@ -84,6 +86,17 @@ export default function Projects() {
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
+                )}
+                {project.preview && onPreview && (
+                  <button
+                    type="button"
+                    onClick={() => onPreview(project.preview)}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border border-sky/40 bg-sky/10 text-sky-light hover:bg-sky/20 hover:text-fg transition-colors"
+                    aria-label="Open preview gallery"
+                  >
+                    <Play className="w-3 h-3" />
+                    Preview
+                  </button>
                 )}
               </div>
             </div>
