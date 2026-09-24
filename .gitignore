@@ -11,3 +11,7 @@ build/
 
 .puku/
 .puku
+
+# Local project notes (kept on disk, not tracked in git)
+public/assets/Credit-card-prediction/features.md
+public/assets/Fraud-detection-pipeline/features.md

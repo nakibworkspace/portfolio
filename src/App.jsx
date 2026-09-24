@@ -14,6 +14,8 @@ import Projects from './components/Projects';
 import Education from './components/Education';
 import Connect from './components/Connect';
 import RagPocModal from './components/RagPocModal';
+import CardApprovalLabsModal from './components/CardApprovalLabsModal';
+import FraudDetectionLabsModal from './components/FraudDetectionLabsModal';
 
 // ─── SECTION MAP ───────────────────────────────────────────
 // All sections live behind the navbar tabs. Home is rendered
@@ -62,6 +64,16 @@ export default function App() {
           is just a new branch here. */}
       <RagPocModal
         open={previewKey === 'ragPocs'}
+        onClose={closePreview}
+      />
+
+      <CardApprovalLabsModal
+        open={previewKey === 'cardApprovalLabs'}
+        onClose={closePreview}
+      />
+
+      <FraudDetectionLabsModal
+        open={previewKey === 'fraudDetectionLabs'}
         onClose={closePreview}
       />
 

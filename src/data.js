@@ -308,16 +308,114 @@ export const personalInfo = {
   ];
 
 
+  // ─── Credit Card Approval Prediction — what's integrated ──
+  // Serial gallery mirroring RagPocModal: first entry is the
+  // architecture-overview hero (with the diagram shown once at
+  // the top), the rest are the individual steps with the
+  // features integrated per step. Triggered by the Preview
+  // button on the project card via preview="cardApprovalLabs".
+  export const cardApprovalLabs = [
+    {
+      title: "Credit Card Approval — Architecture Overview",
+      image: "/assets/Credit-card-prediction/diagram.svg",
+      description:
+        "End-to-end MLOps pipeline: data preprocessing → Airflow + MLflow training → MLflow Model Registry → FastAPI serving with Redis cache → Grafana/Prometheus monitoring → Pulumi-provisioned AWS infra (S3, VPC, EC2) → GitHub Actions CI/CD to three EC2 instances. The diagram below is how I keep all five steps in my head whenever I touch this repo.",
+      bullets: [
+        "Automated ML Pipeline with Airflow & MLflow",
+        "FastAPI Model Serving with Caching",
+        "Monitoring & Observability Stack",
+        "Production Infrastructure with Pulumi & S3",
+        "CI/CD with GitHub Actions & EC2 Deployment",
+      ],
+    },
+    {
+      title: "1. Automated ML Pipeline with Airflow & MLflow",
+      description:
+        "Began by analyzing the credit card approval dataset and surfacing the data quality challenges (missing values, mixed scales, class imbalance, categorical encodings). Picked the model family based on dataset properties + business requirements rather than reaching for the biggest one. Built a preprocessing pipeline with SMOTE, scaling, encoding, and feature engineering. Stood up Apache Airflow on Docker Compose for orchestration, authored DAGs to automate the full training workflow, integrated MLflow for experiment tracking inside Airflow tasks, and registered the best-performing models to the MLflow Model Registry with proper stage transitions (Staging → Production).",
+    },
+    {
+      title: "2. FastAPI Model Serving with Caching",
+      description:
+        "Designed RESTful APIs following serving best practices (versioned routes, clear error contracts). Models load dynamically from the MLflow Model Registry — no hardcoded paths, just request the stage you want. Input validation through Pydantic schemas with business rules so garbage doesn't reach the model. Added Redis caching to push repeated requests below 1ms. Every prediction is logged to Postgres for audit trails and drift monitoring later. Added health and readiness endpoints so this can drop into a Kubernetes-style deployment. The serving-side preprocessing pipeline mirrors the training one exactly so train/serve skew stays at zero.",
+    },
+    {
+      title: "3. Monitoring & Observability Stack for Production Error Handling",
+      description:
+        "Production-grade error handling and observability. Provisioned the Grafana datasource declaratively, built a custom dashboard for the ML-specific metrics I care about (latency, drift signals, cache hit ratio, prediction distribution). Added Nginx as a reverse proxy so the FastAPI surface is fronted properly. Wired all of this into the Docker Compose stack alongside Prometheus + Grafana. The prediction endpoint itself emits the metrics that feed the dashboard — closed loop from the request to the operator's screen.",
+    },
+    {
+      title: "4. Production Infrastructure with Pulumi and S3",
+      description:
+        "Defined the AWS surface in code with Pulumi: S3 for artifact storage, VPC + Security Groups for network isolation, EC2 instances for the workload — separated across a 3-instance architecture (training, serving, monitoring) so a failure in one tier doesn't take the others down. Pointed MLflow at S3 for artifact storage so models and run metadata survive container rebuilds. Cross-service communication runs inside the VPC. Managed infrastructure state and outputs through Pulumi so the whole stack is reproducible from a single `pulumi up`.",
+    },
+    {
+      title: "5. CI/CD with GitHub Actions & EC2 Deployment",
+      description:
+        "Wired GitHub Actions workflows for the full CI/CD surface: automated tests, code-quality checks, security scans (CodeQL, Bandit, Safety). Docker images built and pushed to DockerHub from CI. Deploy job SSHes into the three EC2 instances and pulls the new image straight from DockerHub — environment secrets (DB URLs, MLflow URI, Redis host) are written to each instance during deploy so the same image runs correctly everywhere. Prerequisites intentionally listed: completed earlier steps, GitHub repo, and the three EC2 instances already up.",
+    },
+  ];
+
+
+  // ─── Fraud Detection Pipeline — what's integrated ──────────
+  // Serial gallery mirroring RagPocModal: first entry is the
+  // architecture-overview hero (with the diagram shown once at
+  // the top), the rest are the individual steps with the
+  // features integrated per step. Triggered by the Preview
+  // button on the project card via preview="fraudDetectionLabs".
+  export const fraudDetectionLabs = [
+    {
+      title: "Fraud Detection Pipeline — Architecture Overview",
+      image: "/assets/Fraud-detection-pipeline/fraud-det.svg",
+      description:
+        "End-to-end fraud detection system on AWS: MongoDB on a private EC2 as the data store → Feast feature store (online + offline) → Airflow-orchestrated feature engineering pipeline → MLflow Model Registry on EC2 → training pipeline comparing XGBoost, LightGBM, and Isolation Forest. The diagram below is how I keep all five steps in my head whenever I touch this repo.",
+      bullets: [
+        "Deploying MongoDB in EC2 Instance as a Data Store",
+        "Deploying a Scalable Feature Store with Feast on AWS",
+        "Deploying a Feature Engineering Pipeline with Airflow",
+        "Deploying an MLflow Model Registry on AWS with Pulumi to Store Trained Models",
+        "Deployment of a Model Training Pipeline and Tracking System with MLflow",
+      ],
+    },
+    {
+      title: "1. Deploying MongoDB in EC2 Instance as a Data Store",
+      description:
+        "Provisioned AWS infrastructure (VPC, subnets, NAT Gateway, EC2 instances) with Pulumi and configured a secure network architecture with public + private subnets so the data tier is never directly reachable from the internet. Installed and configured MongoDB on a private EC2 instance through automation scripts (no manual SSH-and-install), transferred the large dataset securely between instances, and imported the CSV into MongoDB collections via mongoimport. Verified the database setup end-to-end and validated data integrity so downstream steps could trust the rows.",
+    },
+    {
+      title: "2. Deploying a Scalable Feature Store with Feast on AWS",
+      description:
+        "Created AWS infrastructure with Pulumi — VPC, EC2, subnets, networking, security groups, and S3 — then installed and configured Feast both via the script-based path and manually, so I know both ways and can pick whichever fits the environment. Verified Feast works against an online store (Redis or SQLite) plus an offline store, and launched a simple Feast Feature Server to store and retrieve feature data. The point was to get feature serving off notebooks and into a real store before any training code touched it.",
+    },
+    {
+      title: "3. Deploying a Feature Engineering Pipeline with Airflow",
+      description:
+        "Tied everything together: provisioned AWS infra programmatically with Pulumi, installed and configured MongoDB, Feast, and Airflow on EC2 instances, then built the feature engineering pipeline in Python as Airflow DAGs. Processed data is stored and retrieved from Feast as the feature store of record, and the whole pipeline is verified and monitored through Airflow's web UI. This is the lab that converted a collection of services into an actual moving pipeline.",
+    },
+    {
+      title: "4. Deploying an MLflow Model Registry on AWS with Pulumi to Store Trained Models",
+      description:
+        "Provisioned AWS infra (VPC, EC2, S3) with Pulumi, installed and configured MLflow on an EC2 instance, and verified the deployment by reaching the MLflow web UI from outside. Used a bastion host for secure access into the private resources so the registry endpoint isn't publicly exposed. The registry sits on S3-backed artifact storage so model files survive container rebuilds, and run metadata lives alongside them — this is the storage layer the training pipeline will write into next.",
+    },
+    {
+      title: "5. Deployment of a Model Training Pipeline and Tracking System with MLflow",
+      description:
+        "Set up AWS infra (VPC, EC2, S3) with Pulumi, installed and configured Apache Airflow to orchestrate the ML pipeline, stood up Feast for feature management, and uploaded feature data into Feast. Built and ran a training DAG that trains and compares ML models — XGBoost, LightGBM, Isolation Forest — with MLflow tracking every run. Verified the whole loop by hitting Airflow and MLflow UIs and reviewing model performance side by side to pick the candidate that goes into the registry.",
+    },
+  ];
+
+
   // ─── PROJECTS / GITHUB REPOS ───────────────────────────────
   // Each object = one project card.
   // Set "demo" to a URL if you have a live demo, or keep it null.
   export const projects = [
     {
       title: "Credit Card Approval Prediction",
-      description: "Streaming data pipeline for real-time fraud scoring using Apache Kafka for event ingestion and Apache Flink for windowed computation and anomaly detection.",
-      tags: ["Kafka", "Flink", "Python", "Docker", "AWS", "Github Action"],
+      description: "End-to-end MLOps pipeline for credit card approval prediction. Covers data preprocessing, automated training with Airflow + MLflow, FastAPI model serving with Redis caching, a Grafana/Prometheus monitoring stack, AWS infrastructure provisioned via Pulumi, and CI/CD to three EC2 instances via GitHub Actions. Same project was built incrementally across five labs.",
+      tags: ["Airflow", "MLflow", "FastAPI", "Redis", "Grafana", "Pulumi", "GitHub Actions", "Docker"],
       github: "https://github.com/nakibworkspace/card-approval-prediction-mlops",
       demo: null,
+      image: "/assets/Credit-card-prediction/diagram.svg",
+      preview: "cardApprovalLabs",
     },
     {
       title: "Serving NLP and CV model using FastAPI on AWS EC2",
@@ -349,10 +447,12 @@ export const personalInfo = {
     },
     {
       title: "Fraud Detection Pipeline",
-      description: "Full ML pipeline from data ingestion to model serving. Includes feature engineering, experiment tracking with MLflow, and data drift monitoring with Evidently AI.",
-      tags: ["MLflow", "Evidently", "Scikit-learn", "FastAPI", "Docker", "Airflow"],
+      description: "End-to-end fraud detection system on AWS: MongoDB data store, Feast feature store, Airflow feature engineering pipeline, MLflow model registry, and a model training pipeline tracking XGBoost, LightGBM, and Isolation Forest. Same project was built incrementally across five labs.",
+      tags: ["MongoDB", "Feast", "Airflow", "MLflow", "Pulumi", "AWS", "XGBoost", "LightGBM"],
       github: "https://github.com/nakibworkspace/Fraud-detection-pipeline",
       demo: null,
+      image: "/assets/Fraud-detection-pipeline/fraud-det.svg",
+      preview: "fraudDetectionLabs",
     },
     {
       title: "RAG-based Knowledge Retrieval System",
