@@ -404,6 +404,139 @@ export const personalInfo = {
   ];
 
 
+  // ─── Chatbot Observability — features walkthrough ──────────
+  // Serial gallery mirroring RagPocModal: first entry is the
+  // hero (project overview + structure), the rest are the
+  // sections of features.md. Each section renders a long-form
+  // description plus an optional `images` array (the
+  // screenshots hosted on the project's GitHub repo). Used for
+  // projects whose gallery is mixed text + screenshots rather
+  // than a single architecture diagram.
+  export const chatbotObservabilityPocs = [
+    {
+      title: "Chatbot Observability — Overview",
+      image: "/assets/Chatbot-Observability/img1.png",
+      description:
+        "A Python CLI chatbot powered by MiniMax, with Langfuse wired in for full-stack LLM observability. The repo is intentionally tiny — three Python files plus .env — so the integration surface is easy to read. config.py loads credentials and initializes the Langfuse client. llm.py wraps the API calls with @observe so every LLM call is auto-traced. chatbot.py runs the chat loop, builds the message list per turn (system prompt + history + current user message), strips chain-of-thought from the assistant reply, and flushes Langfuse on exit. Setup is the standard venv → requirements.txt → .env → python chatbot.py flow.",
+      bullets: [
+        "Project structure (3 files)",
+        "Setup steps and required env vars",
+        "Hero screenshot — chatbot in action",
+        "Langfuse Integration (@observe + flush)",
+        "Langfuse UI views (All Traces / Trace / Log)",
+        "Langfuse Skills in Puku",
+        "History management",
+      ],
+      images: [
+        {
+          src: "/assets/Chatbot-Observability/img1.png",
+          alt: "Chatbot running in CLI",
+          caption: "Chatbot running in CLI — MiniMax-powered chat with full Langfuse tracing behind it.",
+        },
+      ],
+    },
+    {
+      title: "1. Langfuse Integration",
+      description:
+        "Langfuse is wired in two places. First, llm.py decorates call_llm with @observe(capture_input=True, capture_output=True), so every LLM call auto-creates a Langfuse trace recording the full input message list, the raw output, model name, latency, and token usage (when the API returns them). Second, chatbot.py calls langfuse.flush() when the user types exit/quit, so buffered spans are guaranteed to upload before the process exits. From there, traces are reviewable two ways — either via the Langfuse CLI through npx langfuse-cli --env .env api traces list, or by jumping straight into the Langfuse UI for the full All Traces / Trace / Log drill-down.",
+      images: [
+        {
+          src: "/assets/Chatbot-Observability/img6.png",
+          alt: "Langfuse — All Traces view",
+          caption: "All Traces — every chat session shows up here, sortable by timestamp and filtered by metadata.",
+        },
+        {
+          src: "/assets/Chatbot-Observability/img7.png",
+          alt: "Langfuse — Trace View",
+          caption: "Trace View — input message list, output text, latency, and token usage for one specific call.",
+        },
+        {
+          src: "/assets/Chatbot-Observability/img8.png",
+          alt: "Langfuse — Log View",
+          caption: "Log View — span-level breakdown of a trace (system / user / assistant / latency per step).",
+        },
+      ],
+    },
+    {
+      title: "2. Langfuse Skills in Puku",
+      description:
+        "Puku reads skills — markdown files containing documentation references and CLI recipes — to operate tools in natural language. The Langfuse skill is installed with `npx skills add langfuse/skills --skill \"langfuse\"`, which drops it into .agents/skills/langfuse/. Copying it to .puku-cli/skills/langfuse/ activates it under Puku's alternative convention. Once installed, you can ask things like \"list my last 10 traces\", \"get details of trace abc123...\", or \"analyze my recent error traces\" — Puku reads the relevant reference guide and runs the matching langfuse-cli commands. The skill ships with eight reference docs (cli.md, instrumentation.md, prompt-migration.md, user-feedback.md, error-analysis.md, judge-calibration.md, sdk-upgrade.md, skill-feedback.md) covering the common operational surfaces. Because Puku spawns a fresh shell per command, you always pass --env .env so the CLI can load credentials from the .env file instead of inheriting anything from the host shell.",
+      images: [
+        {
+          src: "/assets/Chatbot-Observability/img2.png",
+          alt: "Puku — langfuse skill installation",
+          caption: "Skill installation — `npx skills add langfuse/skills --skill \"langfuse\"` and a copy into .puku-cli/skills/.",
+        },
+        {
+          src: "/assets/Chatbot-Observability/img3.png",
+          alt: "Puku — last 10 traces",
+          caption: "Natural-language query — \"List my last 10 traces\" — Puku shells out to langfuse-cli and renders the result.",
+        },
+        {
+          src: "/assets/Chatbot-Observability/img4.png",
+          alt: "Puku — trace detail",
+          caption: "Trace detail — \"Get details of trace abc123...\" pulls the full trace, including input/output and timing.",
+        },
+        {
+          src: "/assets/Chatbot-Observability/img5.png",
+          alt: "Puku — error trace analysis",
+          caption: "Error analysis — \"Analyze my recent error traces\" — Puku reads error-analysis.md and runs the appropriate filters.",
+        },
+      ],
+    },
+    {
+      title: "3. History Management",
+      description:
+        "The chatbot keeps a history list that grows with each turn: history = [user_msg_1, assistant_reply_1, user_msg_2, assistant_reply_2, ...]. Every build_messages call assembles [system_prompt, ...history, current_user_msg] — note the current message is NOT prepended to history, which prevents the previous turn's verbose chain-of-thought reply from polluting the next LLM input. On the output side, extract_final_answer strips <think>... blocks and returns only the last paragraph so the user sees a clean answer instead of the model's raw reasoning.",
+    },
+  ];
+
+
+  // ─── Data Lake and Warehouse — R&D Labs ────────────────────
+  // Serial gallery mirroring RagPocModal: first entry is the
+  // overview hero (with diagram), the rest are the four R&D
+  // labs. Each lab ships its own architecture diagram so each
+  // section renders a figure alongside its description.
+  export const datalakeProjects = [
+    {
+      title: "Data Lake and Warehouse — Overview",
+      image: "/assets/Datalake-management/project1.svg",
+      description:
+        "Four R&D labs covering the modern data stack end-to-end. Lab 1 is a ClickHouse + dbt + Grafana + Prometheus analytics warehouse on NYC taxi data. Lab 2 builds a PostgreSQL star-schema warehouse with BRIN indexes and materialized views. Lab 3 is a Spark-on-S3 data lake ingestion pipeline in Bronze-Silver-Gold. Lab 4 unifies it all into a lakehouse that lands NYC taxi data through Spark and aggregates into ClickHouse — same pattern Databricks/Netflix/Uber use to bridge their data platforms.",
+      bullets: [
+        "Project 1 — NYC Taxi Trip Analytics (Modern Data Warehouse)",
+        "Project 2 — PostgreSQL Star-Schema Warehouse",
+        "Project 3 — Spark + S3 Data Lake Ingestion (Medallion)",
+        "Project 4 — Unified Lakehouse with Medallion Architecture",
+      ],
+    },
+    {
+      title: "1. NYC Taxi Trip Analytics — Modern Data Warehouse",
+      image: "/assets/Datalake-management/project1.svg",
+      description:
+        "End-to-end data warehouse lab: ingest NYC taxi data into ClickHouse, transform with dbt across Bronze / Silver / Gold layers, visualize in Grafana, and monitor the pipeline with Prometheus. The diagram shows the full ingestion → modeling → visualization → monitoring surface and how ClickHouse, dbt, Grafana, and Prometheus wire together in this lab.",
+    },
+    {
+      title: "2. Building a Data Warehouse with PostgreSQL and Star Schema",
+      image: "/assets/Datalake-management/project2.svg",
+      description:
+        "Production-grade analytical data warehouse built from scratch on real NYC Yellow Taxi trip data. Designed a star schema, loaded ~6 million trip records into range-partitioned tables, created BRIN indexes for efficient time-range lookups, and pre-computed business metrics via materialized views. Each chapter introduces a core warehousing concept and immediately applies it to real data — by the end the warehouse answers questions like 'Which borough generates the most revenue?' or 'How do tipping patterns differ between credit card and cash payments?' in milliseconds instead of minutes.",
+    },
+    {
+      title: "3. Building a Data Lake Ingestion Pipeline with Spark and S3",
+      image: "/assets/Datalake-management/project3.svg",
+      description:
+        "Production-style data lake pipeline from scratch. Ingests raw e-commerce order events into Amazon S3, transforms them into optimized Parquet with Apache Spark, and runs SQL analytics directly on the lake — same pattern data teams at Netflix, Uber, and Airbnb use. The pipeline follows the Bronze-Silver-Gold architecture (Medallion Architecture), the industry standard for organizing data in a lakehouse.",
+    },
+    {
+      title: "4. Building a Unified Lakehouse with the Medallion Architecture",
+      image: "/assets/Datalake-management/project4.svg",
+      description:
+        "Complete data lakehouse pipeline using the Medallion (Bronze-Silver-Gold) architecture. Ingests raw NYC Yellow Taxi trip data, cleans and validates with Apache Spark, aggregates into business-ready tables, and loads the results into ClickHouse as the analytical warehouse. Same pattern data teams at Databricks, Netflix, and Uber use to unify their data platforms.",
+    },
+  ];
+
+
   // ─── PROJECTS / GITHUB REPOS ───────────────────────────────
   // Each object = one project card.
   // Set "demo" to a URL if you have a live demo, or keep it null.
@@ -433,17 +566,21 @@ export const personalInfo = {
     },
     {
       title: "Data Lake and Warehouse Management",
-      description: "A R&D project for high volume data to store and serve using Data Lake and Warehousing",
-      tags: ["Postgres", "AWS S3", "Clickhouse", "dbt", "Prometheus", "Grafana", "Makefile"],
+      description: "Four R&D labs covering the modern data stack end-to-end: a ClickHouse + dbt + Grafana + Prometheus analytics warehouse on NYC taxi data, a PostgreSQL star-schema warehouse with BRIN indexes and materialized views, a Spark-on-S3 data lake ingestion pipeline in Bronze-Silver-Gold, and a unified lakehouse that lands NYC taxi data through Spark and aggregates into ClickHouse.",
+      tags: ["PostgreSQL", "ClickHouse", "dbt", "Apache Spark", "AWS S3", "Grafana", "Prometheus", "Medallion"],
       github: "https://github.com/nakibworkspace/datalake-management/tree/main",
       demo: null,
+      image: "/assets/Datalake-management/project1.svg",
+      preview: "datalakeProjects",
     },
     {
       title: "Chatbot Observability with Langfuse",
-      description: "Integrating Langfuse to a basic chatbot to trace the conversation, token counts, and cost management. Used agentic approach such as Langfuse Skills to debug or any sort of queries done in natural language",
-      tags: ["Langfuse", "Langchain"],
+      description: "Python CLI chatbot instrumented with Langfuse for full-stack LLM observability — every call is auto-traced via @observe, spans flush on exit, and a Puku skill lets you query traces, debug errors, and audit prompts in natural language. Walks through project structure, the @observe integration pattern, Langfuse UI views, and the Puku skill workflow.",
+      tags: ["Langfuse", "Python", "CLI", "Observability", "Puku Skills"],
       github: "https://github.com/nakibworkspace/chatbot-observability",
       demo: null,
+      image: "/assets/Chatbot-Observability/img1.png",
+      preview: "chatbotObservabilityPocs",
     },
     {
       title: "Fraud Detection Pipeline",
@@ -482,9 +619,28 @@ export const personalInfo = {
   ];
 
 
+  // ─── PREVIEW URL SLUGS ──────────────────────────────────────
+  // Maps the camelCase `preview` keys on a project (used in
+  // data.js internally) to the kebab-case URL slug used by
+  // the /preview/:slug route. Keeping these separate means the
+  // data can keep its existing JS-friendly keys while the URL
+  // stays human-readable.
+  export const previewKeyToSlug = {
+    ragPocs:                     "rag-pocs",
+    cardApprovalLabs:            "card-approval-labs",
+    fraudDetectionLabs:          "fraud-detection-labs",
+    chatbotObservabilityPocs:    "chatbot-observability",
+    datalakeProjects:            "data-lake-projects",
+  };
+  export const previewSlugToKey = Object.fromEntries(
+    Object.entries(previewKeyToSlug).map(([k, v]) => [v, k])
+  );
+
+
   // ─── NAVIGATION TABS ───────────────────────────────────────
   // Controls the tab buttons in the navbar.
-  // The "id" must match a key in the `sections` object in App.jsx.
+  // The "id" is the URL path segment (no leading slash) — so
+  // id "projects" maps to /projects, id "home" maps to /.
   export const navTabs = [
     { id: "home",       label: "Home" },
     { id: "experience", label: "Experience" },

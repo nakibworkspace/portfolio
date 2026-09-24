@@ -5,16 +5,25 @@
 // a grid but each cell is transparent with only a divider on
 // hover for visual separation. Projects with an `image` field
 // render a 16:9 hero image above the title. Projects with a
-// `preview` field render a Preview button that triggers a
-// caller-supplied handler.
+// `preview` field render a Preview button that navigates to
+// /preview/<slug> so the open is refresh-safe and counts as a
+// pageview in Vercel Analytics.
 // ============================================================
 
-import { projects } from '../data';
+import { useNavigate } from 'react-router-dom';
+import { projects, previewKeyToSlug } from '../data';
 import {
   Github, ExternalLink, FolderGit2, Lock, Play,
 } from 'lucide-react';
 
-export default function Projects({ onPreview }) {
+export default function Projects() {
+  const navigate = useNavigate();
+
+  const openPreview = (previewKey) => {
+    const slug = previewKeyToSlug[previewKey];
+    if (slug) navigate(`/preview/${slug}`);
+  };
+
   return (
     <div className="space-y-10 max-w-5xl">
 
@@ -87,10 +96,10 @@ export default function Projects({ onPreview }) {
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 )}
-                {project.preview && onPreview && (
+                {project.preview && previewKeyToSlug[project.preview] && (
                   <button
                     type="button"
-                    onClick={() => onPreview(project.preview)}
+                    onClick={() => openPreview(project.preview)}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border border-sky/40 bg-sky/10 text-sky-light hover:bg-sky/20 hover:text-fg transition-colors"
                     aria-label="Open preview gallery"
                   >
