@@ -14,6 +14,13 @@ export default function Education() {
   return (
     <div className="space-y-16 max-w-4xl">
 
+      {/* PAGE INTRO */}
+      <p className="text-fg-dim text-balance -mb-6">
+        Degrees, research direction, and the leadership work that shaped how I organise
+        teams and ship things under pressure.
+      </p>
+
+
       {/* EDUCATION */}
       <div className="space-y-6">
         <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold flex items-center gap-2">
@@ -96,11 +103,49 @@ export default function Education() {
           <ul className="divide-y divide-divider border-t border-divider">
             {leadership.map((item, index) => (
               <li key={index} className="py-6 first:pt-2">
+                {/* Row 1: role (+ optional scope pill) + period */}
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                  <h3 className="text-base sm:text-lg font-semibold text-fg">{item.role}</h3>
-                  <span className="text-xs text-fg-mute">{item.period}</span>
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <h3 className="text-base sm:text-lg font-semibold text-fg">{item.role}</h3>
+                    {item.scope && (
+                      <span
+                        className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border border-sky/40 bg-sky/20 text-sky-light"
+                        title={`Scope: ${item.scope}`}
+                      >
+                        {item.scope}
+                      </span>
+                    )}
+                  </div>
+                  <span className="flex items-center gap-1 text-xs text-fg-mute">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {item.period}
+                  </span>
                 </div>
-                <p className="mt-1 text-sky-light text-sm">{item.institution}</p>
+
+                {/* Optional logo — rendered on a dark tile so logos
+                    with dark backgrounds (e.g. Robolution) sit
+                    well against both light and dark themes. */}
+                {item.logo && (
+                  <figure className="mt-4 max-w-xs overflow-hidden rounded-lg border border-divider bg-[#0d1b2a]">
+                    <img
+                      src={item.logo}
+                      alt={`${item.role} logo`}
+                      loading="lazy"
+                      className="w-full h-auto"
+                    />
+                  </figure>
+                )}
+
+                <p className="mt-3 text-sky-light text-sm">{item.institution}</p>
+
+                {/* Optional one-line problem framing — mirrors the
+                    Experience section's convention so the two
+                    sections read the same way. */}
+                {item.problem && (
+                  <p className="mt-2 max-w-2xl text-sm italic text-fg-dim leading-relaxed">
+                    {item.problem}
+                  </p>
+                )}
 
                 <ul className="mt-3 space-y-1.5 max-w-2xl">
                   {item.points.map((p, i) => (

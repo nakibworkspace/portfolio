@@ -208,7 +208,25 @@ export const personalInfo = {
 
 
   // ─── LEADERSHIP ────────────────────────────────────────────
+  // Optional per-entry fields used by Education.jsx:
+  //   scope  — small pill rendered next to the role title
+  //   logo   — path to an image shown on a dark tile (good for
+  //            logos with dark backgrounds like the Robolution one)
+  //   problem — one-line narrative framing, mirrors the Experience
+  //            section's problem field for consistency
   export const leadership = [
+    {
+      role: "Lead Organizer — MIE Robolution 1.0",
+      institution: "Department of Mechatronics & Industrial Engineering, CUET",
+      period: "May 2025",
+      scope: "National competition",
+      logo: "/projects/robolution.jpg",
+      problem: "Took a fresh department-wide initiative from blank page to a three-day national robotics festival — the first edition, with no playbook to copy from.",
+      points: [
+        "Led end-to-end organisation of MIE Robolution 1.0, CUET's three-day national robotics festival (8–10 May 2025), drawing 700+ students from 41+ universities across Bangladesh.",
+        "Coordinated seminars, competitions, a project showcase, and closing ceremony; ran flagship tracks including Soccer Bot, Line Following Robot, CAD modelling, and Techathon (CUET's first on-site hardware-software hybrid hackathon).",
+      ],
+    },
     {
       role: "Chair — IEEE Computer Society Student Branch",
       institution: "CUET",
