@@ -86,13 +86,19 @@ function PreviewOverlay() {
 }
 
 export default function App() {
+  // Keying the fade wrapper on pathname forces React to remount it
+  // on every navigation, which replays the entrance fade. Without
+  // the key it fires once at full page load and never again — the
+  // route change wouldn't feel like anything happened.
+  const { pathname } = useLocation();
+
   return (
     <div className="min-h-screen bg-bg text-fg font-sans">
 
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-        <div className="animate-fadeIn">
+        <div key={pathname} className="animate-fadeIn">
           <Routes>
             <Route path="/"          element={<Home />} />
             <Route path="/experience" element={<Experience />} />

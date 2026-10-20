@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="Files-File-Csv--Streamline-Pixel" height="32" width="32">
+  <desc>
+  CSV / file pixel icon (hand-authored to match Streamline Pixel style): document with folded corner and "CSV" badge row.
+  </desc>
+  <title>files-file-csv</title>
+  <g>
+    <!-- Document body with folded corner (top-right) -->
+    <path d="M5 2h14v6h6v22H5V2zm1.5 1.5v25h17V10.5h-6V3.5h-11z" fill="#000000"/>
+    <!-- Folded corner triangle -->
+    <path d="M19 2v6h6v1.5h-7.5V2h1.5z" fill="#000000"/>
+    <!-- Comma-glyph row (CSV) — three lines suggesting text lines with a small marker -->
+    <path d="M9 14h10v1.5H9V14zm0 4h10v1.5H9V18zm0 4h10v1.5H9V22zm0 4h6v1.5H9V26z" fill="#000000"/>
+    <!-- "C" mark to signal CSV specifically — small block in the bottom row -->
+    <path d="M21 22h2v1.5h-1v1.5h1v1.5h-2v-1.5h1v-1.5h-1V22z" fill="#000000"/>
+  </g>
+</svg>

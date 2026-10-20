@@ -17,6 +17,7 @@ import {
   FlaskConical, BookOpen, FileText, Telescope,
   ExternalLink, Microscope,
 } from 'lucide-react';
+import RevealOnScroll from './RevealOnScroll';
 
 const typeIcons = {
   "Current Research":     FlaskConical,
@@ -53,7 +54,12 @@ export default function Research() {
           const hasLinks = Array.isArray(item.links) && item.links.length > 0;
 
           return (
-            <li key={index} className="py-6 first:pt-2">
+            <RevealOnScroll
+              key={index}
+              as="li"
+              className="py-6 first:pt-2"
+              delay={Math.min(index, 5) * 0.07}
+            >
               {/* Header row: type · status */}
               <div className="flex flex-wrap items-center gap-3">
                 <Icon className="w-4 h-4 text-sky-light" />
@@ -100,7 +106,7 @@ export default function Research() {
                   ))}
                 </div>
               )}
-            </li>
+            </RevealOnScroll>
           );
         })}
       </ul>

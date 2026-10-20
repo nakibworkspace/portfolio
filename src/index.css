@@ -78,6 +78,98 @@
   animation: fadeIn 0.18s ease-out both;
 }
 
+/* 4b. Motion vocabulary — the WHOLE set. Restrained by design:
+      short durations, small travel distances, one-shot entrances.
+      Nothing loops, nothing reverses, nothing bounces. Every
+      animation here is opacity/transform only (compositor-safe),
+      and all of them are neutralised at the bottom of this file
+      under `prefers-reduced-motion`. */
+
+/* Entrance lift — the workhorse. Fades up 10px over 380ms. */
+@keyframes lift-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hairline draw — the accent rule under the hero name grows
+      from the centre outward, mirroring its own gradient. */
+@keyframes underline-grow {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+/* Panel entry — modals scale up from 0.985. Barely perceptible
+      individually; it's the compositing that reads as "settled". */
+@keyframes panel-in {
+  from { opacity: 0; transform: scale(0.985) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Backdrop fade — kept separate from panel-in so the scrim can
+      arrive slightly ahead of the panel it dims. */
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Timeline dot breathe — the ONE loop on the site. 6s alternate
+      alpha-only pulse on the existing glow. Delete this + the
+      `.timeline-dot` rule if it reads as decoration rather than
+      signal. */
+@keyframes accent-breathe {
+  from { box-shadow: 0 0 10px rgba(230, 57, 70, 0.40); }
+  to   { box-shadow: 0 0 14px rgba(230, 57, 70, 0.70); }
+}
+
+/* Pixel-icon drift — the ambient loop for hero icons. A 6-8px
+      vertical drift over a long cycle. Different durations and
+      delays per icon keep them out of phase so the eye reads
+      "atmosphere," not "synchronized." */
+@keyframes float-y {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(0, -7px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Stack rise — the landing page's one moving beat. The
+      categorized Stack sits below the fold; the moment it
+      enters the viewport it rises from the bottom edge (an
+      80px translateY, with a longer 720ms ease) so it reads
+      as arriving rather than appearing. Plays once, stays
+      put. Gated on `prefers-reduced-motion: no-preference`
+      below; the reduced-motion guard collapses it to a
+      static render. */
+@keyframes stack-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Stack label — the section title "STACK" grows from a small
+      baseline into its full size when the Stack block scrolls
+      into view. Starts at 0.5× scale, weight 400, full muted
+      opacity; lands at 1× scale (its own natural font-size),
+      weight 700, and the muted-opacity the markup specifies.
+      The transform-origin is `left center` so the label
+      expands rightward rather than pivoting around its
+      midpoint, which would feel like a stamp rather than a
+      title settling in. */
+@keyframes stack-label-grow {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* 5. Hide scrollbar (used by Navbar overflow) */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -123,15 +215,134 @@
   }
 }
 
-/* 8. Reduced-motion guard — disables the fade-in on tab switch */
+/* 8. Reduced-motion guard — neutralises every motion element.
+      This block is the single source of truth for a11y: if you
+      add a new keyframe above, add its utility class here too.
+      The set of classes to neutralise is small and listed in one
+      place so it can't drift out of sync with the keyframes. */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fadeIn {
+  .animate-fadeIn,
+  .lift-in,
+  .accent-grow,
+  .panel-in,
+  .backdrop-in,
+  .timeline-dot,
+  .stack-skill,
+  .stack-rise,
+  .stack-label {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
+    transform: none !important;
+    box-shadow: 0 0 12px rgba(230, 57, 70, 0.55) !important;
+  }
+
+  /* Pixel-drift gets its own override (separate from the block
+      above) because its three opacity tiers — 15 / 25 / 30 —
+      are visual design, not motion. The reduced-motion rule
+      here stops the vertical drift and the opacity transition
+      but leaves each icon at whatever opacity tier it was
+      rendered with, so the layered look survives for users who
+      opted out of motion. */
+  .pixel-drift {
+    animation: none !important;
+    transition: none !important;
     transform: none !important;
   }
 }
 
 /* 9. Smooth scroll */
 html { scroll-behavior: smooth; }
+
+/* 10. Motion utility classes — wrapped in a no-preference media
+       query so they don't even *exist* for users who opted out.
+       That's cheaper than relyinging on the override alone: the
+       browser never computes the keyframes or the delay chain. */
+@media (prefers-reduced-motion: no-preference) {
+
+  .lift-in {
+    opacity: 0;
+    animation: lift-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  /* Cascade delays for the hero letterfall and list stagger.
+      `animation-delay` lets us set per-element timing inline. */
+  .lift-in-delay-1 { animation-delay: 0.05s; }
+  .lift-in-delay-2 { animation-delay: 0.10s; }
+  .lift-in-delay-3 { animation-delay: 0.20s; }
+  .lift-in-delay-4 { animation-delay: 0.35s; }
+  .lift-in-delay-5 { animation-delay: 0.55s; }
+  .lift-in-delay-6 { animation-delay: 0.80s; }
+
+  /* Hairline accent rule — runs AFTER the hero name settles,
+      driven by inline `animation-delay` on the element. */
+  .accent-grow {
+    transform-origin: center;
+    animation: underline-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .panel-in {
+    animation: panel-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .backdrop-in {
+    animation: backdrop-in 0.14s ease-out both;
+  }
+
+  .timeline-dot {
+    animation: accent-breathe 6s ease-in-out infinite alternate;
+  }
+
+  /* Stack rise — see keyframe above. Applied to the categorized
+      Stack wrapper by `<RevealOnScroll>` the moment it scrolls
+      into view (the wrapped element starts hidden via
+      `.reveal-prep` so there is no flash). Longer duration
+      than `.lift-in` because the travel distance is larger
+      (80px vs 10px) and a slower rise reads as "the page
+      just landed here," not "an animation ran." */
+  .stack-rise {
+    animation: stack-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Stack label grow-in — plays AFTER the wrapper's own
+      `stack-rise` (0.72s), so the two read as one continuous
+      arrival: the block lifts, then the title swells to size.
+      The 0.3s delay is the hand-off beat between them. Left
+      origin so it expands rightward from its own left edge,
+      the way a heading would set itself rather than zoom
+      from its centre. */
+  .stack-label {
+    transform-origin: left center;
+    animation: stack-label-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.3s;
+  }
+
+  /* Pre-reveal hidden state for RevealOnScroll. Kept here so it
+      inherits the same no-preference gate. */
+  .reveal-prep {
+    opacity: 0;
+  }
+
+  /* Stack skill — micro-interaction: the text lifts 1px on
+      hover so the reader's eye knows it's tappable, but it
+      doesn't move enough to feel like a button. Gated on
+      no-preference; reduced-motion users see a static row. */
+  .stack-skill {
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .stack-skill:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Pixel-icon ambient drift. Different durations / delays per
+      instance keep the icons out of phase. The reduced-motion
+      block above neutralises the animation; the icon still
+      renders at its static position. */
+  .pixel-drift {
+    animation: float-y 7s ease-in-out infinite;
+    will-change: transform;
+  }
+  .pixel-drift-a { animation-duration: 6.5s; animation-delay: 0s;  }
+  .pixel-drift-b { animation-duration: 8s;   animation-delay: 1.2s; }
+  .pixel-drift-c { animation-duration: 7.5s; animation-delay: 2.4s; }
+  .pixel-drift-d { animation-duration: 9s;   animation-delay: 0.6s; }
+}
