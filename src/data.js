@@ -39,6 +39,10 @@ export const personalInfo = {
     // ← REPLACE with your real profile URLs
     linkedin: "https://www.linkedin.com/in/nakibahmedraj/",
     github: "https://github.com/nakibworkspace",
+    // TODO: paste your Twitter / X URL here when ready.
+    // Empty string -> the Twitter channel row will still render
+    // but link to nothing until this is filled in.
+    twitter: "https://x.com/nokeepahmed?s=11",
 
     // Path to your CV file. Files in `public/` are served at the
     // site root, so just use the filename.

@@ -8,6 +8,7 @@
 
 import { experience } from '../data';
 import { Building2, Calendar } from 'lucide-react';
+import RevealOnScroll from './RevealOnScroll';
 
 export default function Experience() {
   return (
@@ -27,10 +28,10 @@ export default function Experience() {
 
         <div className="space-y-12">
           {experience.map((exp, index) => (
-            <div key={index} className="relative">
+            <RevealOnScroll key={index} className="relative" delay={Math.min(index, 4) * 0.08}>
               {/* Timeline dot — red with subtle glow */}
               <div
-                className="absolute -left-[34px] top-1.5 w-3 h-3 rounded-full bg-accent ring-4 ring-bg"
+                className="absolute -left-[34px] top-1.5 w-3 h-3 rounded-full bg-accent ring-4 ring-bg timeline-dot"
                 style={{ boxShadow: '0 0 12px rgba(230, 57, 70, 0.55)' }}
                 aria-hidden="true"
               />
@@ -99,7 +100,7 @@ export default function Experience() {
                   );
                 })}
               </ul>
-            </div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>

@@ -9,6 +9,7 @@
 
 import { education, leadership } from '../data';
 import { GraduationCap, Trophy, Calendar, Compass } from 'lucide-react';
+import RevealOnScroll from './RevealOnScroll';
 
 export default function Education() {
   return (
@@ -30,7 +31,7 @@ export default function Education() {
 
         <ul className="divide-y divide-divider border-t border-divider">
           {education.map((edu, index) => (
-            <li key={index} className="py-6 first:pt-2">
+            <RevealOnScroll key={index} as="li" className="py-6 first:pt-2" delay={index * 0.07}>
               <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                 <h3 className="text-lg sm:text-xl font-semibold text-fg">{edu.degree}</h3>
                 <span className="flex items-center gap-1 text-xs text-fg-mute">
@@ -74,7 +75,7 @@ export default function Education() {
                   ))}
                 </ul>
               )}
-            </li>
+            </RevealOnScroll>
           ))}
         </ul>
 
@@ -102,7 +103,7 @@ export default function Education() {
 
           <ul className="divide-y divide-divider border-t border-divider">
             {leadership.map((item, index) => (
-              <li key={index} className="py-6 first:pt-2">
+              <RevealOnScroll key={index} as="li" className="py-6 first:pt-2" delay={index * 0.07}>
                 {/* Row 1: role (+ optional scope pill) + period */}
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -155,7 +156,7 @@ export default function Education() {
                     </li>
                   ))}
                 </ul>
-              </li>
+            </RevealOnScroll>
             ))}
           </ul>
         </div>

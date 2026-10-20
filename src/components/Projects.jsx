@@ -43,7 +43,10 @@ export default function Projects() {
         {projects.map((project, index) => (
           <li
             key={index}
-            className="group py-6 first:pt-2"
+            className="group py-6 first:pt-2 lift-in"
+            // Cascade the rows in. The cap keeps a long list from
+            // feeling slow — after the first few, rows land together.
+            style={{ animationDelay: `${Math.min(index, 6) * 0.06}s` }}
           >
             {/* Small inline thumbnail — for projects that ship a hero */}
             {project.image && (
@@ -100,7 +103,7 @@ export default function Projects() {
                   <button
                     type="button"
                     onClick={() => openPreview(project.preview)}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border border-sky/40 bg-sky/10 text-sky-light hover:bg-sky/20 hover:text-fg transition-colors"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border border-sky/40 bg-sky/10 text-sky-light hover:bg-sky/20 hover:text-fg transition-[background-color,border-color,color] duration-200 ease-out"
                     aria-label="Open preview gallery"
                   >
                     <Play className="w-3 h-3" />

@@ -50,12 +50,12 @@ export default function DatalakeProjectsModal({ open, onClose }) {
       role="dialog"
       aria-modal="true"
       aria-label="Data Lake and Warehouse — R&D Labs"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-bg/85 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-bg/85 backdrop-blur-sm overflow-y-auto backdrop-in"
       onClick={onClose}
     >
       {/* STOP PROPAGATION so clicks inside the panel don't close */}
       <div
-        className="relative w-full max-w-5xl mx-4 my-8 sm:my-12 bg-bg-elevated border border-divider rounded-xl shadow-2xl"
+        className="relative w-full max-w-5xl mx-4 my-8 sm:my-12 bg-bg-elevated border border-divider rounded-xl shadow-2xl panel-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER */}
