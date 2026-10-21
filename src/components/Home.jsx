@@ -157,7 +157,7 @@ export default function Home() {
             revealClass="stack-label"
             className="inline-block shrink-0"
           >
-            <span className="text-3xl sm:text-4xl font-bold uppercase tracking-[0.12em] text-fg-mute/70">
+            <span className="text-3xl sm:text-4xl font-bold uppercase tracking-[0.12em] text-fg-mute/50">
               Stack
             </span>
           </RevealOnScroll>

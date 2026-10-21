@@ -1,7 +1,8 @@
 // ============================================================
 // Research.jsx — RESEARCH ITEMS ONLY (NO PROJECTS)
 //
-// Flat list separated by hairline dividers. Each item shows:
+// Flat list, items separated by generous vertical padding (no
+// hairline dividers). Each item shows:
 //   - Type + status pill
 //   - Title
 //   - Description
@@ -15,7 +16,7 @@
 import { research } from '../data';
 import {
   FlaskConical, BookOpen, FileText, Telescope,
-  ExternalLink, Microscope,
+  ExternalLink,
 } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 
@@ -33,22 +34,17 @@ const statusClass = (status) =>
     : 'bg-sky/20 text-sky-light border-sky/40';
 
 export default function Research() {
+  // Page-level header ("RESEARCH" eyebrow + tagline) is rendered
+  // by App.jsx as a sibling of <main> so it lines up flush with
+  // the navbar brand. This component renders only the body.
   return (
     <div className="space-y-10 max-w-4xl">
 
-      {/* HEADER */}
-      <div className="space-y-3">
-        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold flex items-center gap-2">
-          <Microscope className="w-4 h-4" />
-          Research
-        </h2>
-        <p className="text-fg-dim text-balance max-w-2xl">
-          ML, NLP, and LLM agents applied to software engineering — code generation, code review, program repair, and developer tooling.
-        </p>
-      </div>
-
-      {/* LIST */}
-      <ul className="divide-y divide-divider border-t border-divider">
+      {/* LIST — items separated only by padding, no hairlines.
+          Each item gets `py-6` for vertical breathing room. The
+          first item also gets `pt-2` so it sits closer to the
+          page header above. */}
+      <ul>
         {research.map((item, index) => {
           const Icon = typeIcons[item.type] || FlaskConical;
           const hasLinks = Array.isArray(item.links) && item.links.length > 0;

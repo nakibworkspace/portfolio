@@ -132,6 +132,16 @@ export const personalInfo = {
       ],
     },
     {
+      type: "Side Interest",
+      title: "Surface Detection of Steel using YOLO and ResNet",
+      status: "Completed",
+      description: "Detected surface defects on steel sheets by combining YOLO for real-time defect localisation with a ResNet classifier for fine-grained defect categorisation. Explored how a hybrid two-stage CV pipeline compares against a single end-to-end detector on industrial surface-defect benchmarks.",
+      tags: ["Computer Vision", "YOLO", "ResNet", "Defect Detection", "Industrial AI"],
+      links: [
+        // { label: "Notes", href: "" },
+      ],
+    },
+    {
       type: "Undergraduate Thesis",
       title: "Online Harassment Detection using Neural NLP Approaches",
       status: "Completed",
@@ -153,14 +163,14 @@ export const personalInfo = {
   //     learning = currently exploring, not yet shipped
   //   items: skill names shown as a flowing list under the category.
   export const skills = {
-    "Orchestration":       { mark: "shipped",  items: ["Apache Airflow", "MLflow", "Langfuse", "Prefect"] },
+    "Orchestration":       { mark: "shipped",  items: ["Apache Airflow", "MLflow", "Prefect"] },
     "Data Engineering":    { mark: "shipped",  items: ["Apache Spark", "Apache Kafka", "Apache Flink", "SQL", "dbt", "Clickhouse", "Polars"] },
     "Infrastructure":      { mark: "shipped",  items: ["AWS (EC2, S3, EKS, Lambda)", "Docker", "Kubernetes", "Pulumi (IaC)"] },
     "ML Monitoring":       { mark: "shipped",  items: ["Evidently AI", "MLflow Tracking", "Custom Metrics", "Prometheus", "Grafana", "OpenObserve"] },
     "Observability & Logs":{ mark: "shipped",  items: ["Loki", "Observium (SNMP)", "LogQL", "MinIO (S3)"] },
     "Backend & APIs":      { mark: "shipped",  items: ["FastAPI", "PostgreSQL", "REST APIs"] },
     "Vector & Search":     { mark: "shipped",  items: ["Qdrant", "Elasticsearch", "SBERT (sentence-transformers)", "Vector embeddings"] },
-    "Agentic Workflows":   { mark: "shipped",  items: ["LangChain", "LangGraph", "Langfuse", "W&B"] },
+    "Agentic Workflows":   { mark: "shipped",  items: ["LangChain", "LangGraph", "LangSmith", "Langfuse", "W&B"] },
     "ML Research":         { mark: "research", items: ["PyTorch", "Hugging Face Transformers", "VLMs (CLIP / BLIP-2)"] },
     "Currently exploring": { mark: "learning", items: ["Harness Engineering", "Efficient Agentic AI usages"] },
   };
@@ -192,13 +202,16 @@ export const personalInfo = {
       // Relevant coursework, ordered roughly by depth.
       coursework: [
         "Linear Algebra",
-        "Numerical Methods",
-        "Optimization",
+        "Numerical Method",
+        "Signal and Processing",
         "Statistics",
+        "Basic Programming",
         "Machine Learning",
-        "Natural Language Processing",
         "Robotics",
-        "Linear Systems",
+        "Control System",
+        "Power Electronics",
+        "Deep Learning",
+        "Operation Management",
       ],
       // One-line pointer to where I am heading next — read by
       // PI's during a 30-second portfolio scan.
