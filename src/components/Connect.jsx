@@ -19,6 +19,12 @@
 // page instead of ending in a hard rectangle. Clicking the GIF
 // (or the small "what I code to" chip pinned to its opaque
 // corner) opens that playlist in a new tab.
+//
+// CURRENT STATE: <SpotifyCard /> is commented out at the bottom
+// of this file because the gif it depends on (public/gif/new.gif)
+// is not yet committed — without it, the card renders a large
+// broken-image placeholder. Re-enable when the gif component
+// lands.
 // ============================================================
 
 import { useEffect, useState } from 'react';
@@ -212,9 +218,13 @@ export default function Connect() {
   // Ambient GIF: positioned mid-right alongside the channel list
   // (not bottom-right anymore — per layout call). Links to a
   // Spotify playlist the user curated as "what I code to."
+  //
+  // Temporarily disabled — see header comment. Uncomment
+  // <SpotifyCard /> below to re-enable once the gif component is
+  // committed.
   return (
     <>
-      <SpotifyCard />
+      {/* <SpotifyCard /> */}
 
       {/* Channel block sits at the natural left edge of <main>'s
           content area, which already matches the navbar's left
