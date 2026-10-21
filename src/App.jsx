@@ -15,10 +15,19 @@
 //   3. Closing the modal just unmounts it; Projects stays put.
 // `<Analytics />` is kept at the bottom of the tree — it
 // auto-fires a pageview on every route change.
+//
+// PAGE HEADERS — Why they're inside <main>
+//   Each section has a small uppercase eyebrow + tagline that
+//   reads as the page's "title." These are rendered inside the
+//   centered `max-w-6xl mx-auto` <main> container so they align
+//   perfectly with the content below them. Each component renders
+//   only the body; the per-route header is rendered here from the
+//   `PAGE_HEADERS` map keyed by pathname.
 // ============================================================
 
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
+// (no icons in page headers — eyebrow labels stand alone)
 
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -33,6 +42,42 @@ import FraudDetectionLabsModal from './components/FraudDetectionLabsModal';
 import ChatbotObservabilityPocsModal from './components/ChatbotObservabilityPocsModal';
 import DatalakeProjectsModal from './components/DatalakeProjectsModal';
 import { previewSlugToKey } from './data';
+
+// ─── PAGE HEADERS ──────────────────────────────────────────
+// Keyed by the same path the route renders. Each header has
+// three optional pieces:
+//   - eyebrow: a small uppercase tracked label (e.g. "Research")
+//   - tagline: a one-sentence subtitle below the eyebrow
+//   - variant: 'eyebrow' (default, used on Experience / Research
+//     / Projects / Education) or 'hero' (used on Connect, which
+//     renders a large h1 instead of a small uppercase eyebrow).
+//
+// When a page is mounted at /preview/<slug>, Projects is the
+// backdrop; we deliberately DON'T show its header so the modal
+// doesn't compete with two titles on the screen.
+const PAGE_HEADERS = {
+  '/experience': {
+    eyebrow: 'Experience',
+    tagline: "Where I've applied MLOps and data engineering in practice.",
+  },
+  '/research': {
+    eyebrow: 'Research',
+    tagline: 'ML, NLP, and LLM agents applied to software engineering — code generation, code review, program repair, and developer tooling.',
+  },
+  '/projects': {
+    eyebrow: 'Projects',
+    tagline: 'Selected work showcasing MLOps, data engineering, and ML systems.',
+  },
+  '/education': {
+    eyebrow: 'Education',
+    tagline: 'Degrees, research direction, and the leadership work that shaped how I organise teams and ship things under pressure.',
+  },
+  '/connect': {
+    variant: 'hero',
+    title: 'Connect',
+    tagline: "I'm currently considering PhD programs in software-engineering research (the ML / NLP / LLM-agents-for-SE direction), and select MLOps or data-engineering consulting work. If that's you, I'd like to hear from you.",
+  },
+};
 
 // ─── PREVIEW MODAL OVERLAY ─────────────────────────────────
 // Driven by the current pathname (not a route). If the URL is
@@ -85,6 +130,52 @@ function PreviewOverlay() {
   );
 }
 
+// Renders the page-level header for the given pathname, if any.
+// Returns null when no header is registered (e.g. on / or on a
+// /preview/* backdrop) so the caller can render the body in <main>
+// with no preceding header block.
+function PageHeader({ pathname }) {
+  const header = PAGE_HEADERS[pathname];
+  if (!header) return null;
+
+  // Hero variant (Connect): big bold title + paragraph.
+  // Wrapped in `max-w-3xl` so it aligns with the page's centered
+  // reading column instead of being flush-left. The `mr-auto ml-0`
+  // pattern (instead of `mx-auto`) keeps it left-aligned within
+  // the centered container, matching the body content below.
+  if (header.variant === 'hero') {
+    return (
+      <div className="pt-8 pb-10 max-w-3xl mr-auto ml-0">
+        <h1 className="text-3xl sm:text-4xl font-bold text-fg tracking-tight">
+          {header.title}
+        </h1>
+        {header.tagline && (
+          <p className="mt-4 text-base text-fg-dim leading-relaxed text-balance">
+            {header.tagline}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  // Default eyebrow variant: small uppercase label + tagline.
+  // Sized to match the Experience timeline (the widest reading
+  // column on most pages) so the eyebrow sits above the first
+  // content row in the same column.
+  return (
+    <div className="pt-8 pb-10 max-w-6xl">
+      <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold">
+        {header.eyebrow}
+      </h2>
+      {header.tagline && (
+        <p className="text-fg-dim mt-3 text-balance max-w-2xl">
+          {header.tagline}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   // Keying the fade wrapper on pathname forces React to remount it
   // on every navigation, which replays the entrance fade. Without
@@ -98,6 +189,7 @@ export default function App() {
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+        <PageHeader pathname={pathname} />
         <div key={pathname} className="animate-fadeIn">
           <Routes>
             <Route path="/"          element={<Home />} />

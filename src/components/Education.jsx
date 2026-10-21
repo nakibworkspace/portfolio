@@ -8,25 +8,20 @@
 // ============================================================
 
 import { education, leadership } from '../data';
-import { GraduationCap, Trophy, Calendar, Compass } from 'lucide-react';
+import { Trophy, Calendar, Compass } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 
 export default function Education() {
   return (
     <div className="space-y-16 max-w-4xl">
 
-      {/* PAGE INTRO */}
-      <p className="text-fg-dim text-balance -mb-6">
-        Degrees, research direction, and the leadership work that shaped how I organise
-        teams and ship things under pressure.
-      </p>
-
-
-      {/* EDUCATION */}
+      {/* DEGREES — section label inside the page. The page's
+          top-level "EDUCATION" eyebrow is rendered by App.jsx
+          flush-left alongside the navbar brand; this in-page
+          label says "Degrees" so it doesn't duplicate it. */}
       <div className="space-y-6">
-        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold flex items-center gap-2">
-          <GraduationCap className="w-4 h-4" />
-          Education
+        <h2 className="text-sm uppercase tracking-[0.25em] text-sky-light font-semibold">
+          Degrees
         </h2>
 
         <ul className="divide-y divide-divider border-t border-divider">

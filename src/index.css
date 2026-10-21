@@ -56,7 +56,20 @@
 
 /* 3. Global base styles */
 @layer base {
+  html, body {
+    /* Reserve a stable vertical scrollbar gutter on the right so
+        macOS / overlay-style scrollbars don't flicker in and out
+        when the page is scrolled. Combined with `overflow-x:
+        hidden` on the body, this keeps the right edge perfectly
+        still — no half-scrollbar-width content shifts mid-scroll. */
+    scrollbar-gutter: stable;
+  }
   body {
+    /* Any incidental horizontal overflow (e.g. the Experience
+        timeline rail's `-left-[34px]` dot, or PixelScatter's
+        `w-screen` breakout) is clipped at the viewport edge
+        instead of producing an unwanted horizontal scrollbar. */
+    overflow-x: hidden;
     background:
       radial-gradient(ellipse at 50% 0%, var(--accent-soft) 0%, var(--bg) 55%),
       var(--bg);
@@ -249,10 +262,45 @@
     transition: none !important;
     transform: none !important;
   }
+
+  /* Hover-scale micro-interactions: neutralize the transform on
+      hover so users who opted out of motion don't see the row
+      grow on cursor entry (the color/opacity changes still
+      apply — those are visual style, not motion). */
+  .hover\:scale-\[1\.01\]:hover {
+    transform: none !important;
+  }
 }
 
 /* 9. Smooth scroll */
 html { scroll-behavior: smooth; }
+
+/* 9b. Thin vertical scrollbar — webkit (Chrome, Edge, Safari) +
+      Firefox. Width drops from the default ~15px to 8px so the
+      rail feels like a hairline indicator, not a chunky chrome
+      strip. Thumb uses `var(--fg-mute)` at low alpha so it reads
+      on both light and dark themes; track is transparent so it
+      only ever shows up against the page background, never as a
+      visible grey slab. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(138, 168, 182, 0.5) transparent;
+}
+html::-webkit-scrollbar {
+  width: 8px;
+}
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(138, 168, 182, 0.5);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+html::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(138, 168, 182, 0.8);
+}
 
 /* 10. Motion utility classes — wrapped in a no-preference media
        query so they don't even *exist* for users who opted out.
