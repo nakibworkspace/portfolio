@@ -33,6 +33,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Experience from './components/Experience';
 import Research from './components/Research';
+import ResearchAgenda from './components/ResearchAgenda';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Connect from './components/Connect';
@@ -56,17 +57,21 @@ import { previewSlugToKey } from './data';
 // backdrop; we deliberately DON'T show its header so the modal
 // doesn't compete with two titles on the screen.
 const PAGE_HEADERS = {
-  '/experience': {
-    eyebrow: 'Experience',
-    tagline: "Where I've applied MLOps and data engineering in practice.",
-  },
   '/research': {
     eyebrow: 'Research',
-    tagline: 'ML, NLP, and LLM agents applied to software engineering — code generation, code review, program repair, and developer tooling.',
+    tagline: 'Publications, manuscripts, and active self-initiated investigations in LLM alignment, inference efficiency, agent evaluation, and multimodal reasoning.',
+  },
+  '/research/agenda': {
+    eyebrow: 'Research Agenda',
+    tagline: 'The research questions I am working on, and how my industry work at Poridhi.io generated them.',
+  },
+  '/experience': {
+    eyebrow: 'Experience',
+    tagline: "Where I've applied MLOps and data engineering in practice, and the research questions each system raised.",
   },
   '/projects': {
     eyebrow: 'Projects',
-    tagline: 'Selected work showcasing MLOps, data engineering, and ML systems.',
+    tagline: 'Industry delivery and self-initiated research, kept separate so you can tell which is which.',
   },
   '/education': {
     eyebrow: 'Education',
@@ -75,7 +80,7 @@ const PAGE_HEADERS = {
   '/connect': {
     variant: 'hero',
     title: 'Connect',
-    tagline: "I'm currently considering PhD programs in software-engineering research (the ML / NLP / LLM-agents-for-SE direction), and select MLOps or data-engineering consulting work. If that's you, I'd like to hear from you.",
+    tagline: "I'm looking for a PhD in the reliable-LLM-systems direction: LLM alignment, inference efficiency, NLP, and agent evaluation, where the production-systems background I bring is an asset rather than a detour. I'm also open to select MLOps or data-engineering consulting work. If that's you, I'd like to hear from you.",
   },
 };
 
@@ -188,13 +193,25 @@ export default function App() {
 
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+      {/* TOP PADDING clears the fixed navbar. The navbar is a
+          single 64px row from `md` up, but below that it wraps:
+          brand on one line, tab cluster on one or two more. So
+          the clearance grows on small screens rather than being
+          a fixed 96px that the wrapped navbar would overlap.
+          (The navbar is `fixed`, so this padding is what keeps
+          the first line of content from sliding underneath it.) */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-28 pb-20">
         <PageHeader pathname={pathname} />
         <div key={pathname} className="animate-fadeIn">
           <Routes>
             <Route path="/"          element={<Home />} />
             <Route path="/experience" element={<Experience />} />
             <Route path="/research"   element={<Research />} />
+            {/* The bridge page — how industry work fed the
+                research questions. React Router ranks routes by
+                specificity, so this resolves ahead of any
+                catch-all without needing to be declared first. */}
+            <Route path="/research/agenda" element={<ResearchAgenda />} />
             <Route path="/projects"   element={<Projects />} />
             <Route path="/education"  element={<Education />} />
             <Route path="/connect"    element={<Connect />} />

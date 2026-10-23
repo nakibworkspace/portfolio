@@ -67,8 +67,16 @@
   body {
     /* Any incidental horizontal overflow (e.g. the Experience
         timeline rail's `-left-[34px]` dot, or PixelScatter's
-        `w-screen` breakout) is clipped at the viewport edge
-        instead of producing an unwanted horizontal scrollbar. */
+        full-width breakout) is clipped at the viewport edge
+        instead of producing an unwanted horizontal scrollbar.
+
+        NOTE: this is a safety net, not a substitute for
+        responsive layout. It hid two real bugs — the navbar tab
+        cluster and the Home meta line — by clipping them
+        instead of showing a scrollbar, which made unreachable
+        content look like content that was simply absent. Both
+        are fixed; keep this for genuinely incidental overflow
+        only. */
     overflow-x: hidden;
     background:
       radial-gradient(ellipse at 50% 0%, var(--accent-soft) 0%, var(--bg) 55%),
@@ -144,14 +152,17 @@
   100% { transform: translate3d(0, 0, 0); }
 }
 
-/* Stack rise — the landing page's one moving beat. The
+/* Stack rise — the landing page's section-arrival beat. The
       categorized Stack sits below the fold; the moment it
       enters the viewport it rises from the bottom edge (an
       80px translateY, with a longer 720ms ease) so it reads
       as arriving rather than appearing. Plays once, stays
       put. Gated on `prefers-reduced-motion: no-preference`
       below; the reduced-motion guard collapses it to a
-      static render. */
+      static render.
+
+      The Research strip on the homepage reuses this keyframe
+      so the two blocks arrive the same way. */
 @keyframes stack-rise {
   from {
     opacity: 0;
@@ -163,15 +174,17 @@
   }
 }
 
-/* Stack label — the section title "STACK" grows from a small
-      baseline into its full size when the Stack block scrolls
-      into view. Starts at 0.5× scale, weight 400, full muted
-      opacity; lands at 1× scale (its own natural font-size),
-      weight 700, and the muted-opacity the markup specifies.
+/* Stack label — a section title grows from a small baseline
+      into its full size when its block scrolls into view.
+      Starts at 0.5× scale, weight 400, full muted opacity;
+      lands at 1× scale (its own natural font-size), weight
+      700, and the muted-opacity the markup specifies.
       The transform-origin is `left center` so the label
       expands rightward rather than pivoting around its
       midpoint, which would feel like a stamp rather than a
-      title settling in. */
+      title settling in.
+
+      Used by both the "Stack" and "Research" section titles. */
 @keyframes stack-label-grow {
   from {
     opacity: 0;
@@ -346,7 +359,8 @@ html::-webkit-scrollbar-thumb:hover {
       `.reveal-prep` so there is no flash). Longer duration
       than `.lift-in` because the travel distance is larger
       (80px vs 10px) and a slower rise reads as "the page
-      just landed here," not "an animation ran." */
+      just landed here," not "an animation ran."
+      Shared with the Research strip wrapper on Home. */
   .stack-rise {
     animation: stack-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -357,7 +371,8 @@ html::-webkit-scrollbar-thumb:hover {
       The 0.3s delay is the hand-off beat between them. Left
       origin so it expands rightward from its own left edge,
       the way a heading would set itself rather than zoom
-      from its centre. */
+      from its centre.
+      Shared by the "Stack" and "Research" section titles. */
   .stack-label {
     transform-origin: left center;
     animation: stack-label-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;

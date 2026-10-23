@@ -21,12 +21,21 @@
 //   ends flush against the container's right padding.
 //
 // RESPONSIVE LAYOUT
-//   • default (mobile, <sm): brand shrinks to text-base; the tab
-//     cluster WRAPS onto a second row below it (right-aligned via
-//     the same `ml-auto`) so nothing is cropped or scrolled.
-//   • sm+: single row, brand left, cluster right.
+//   • default (mobile, <md): brand shrinks to text-lg and the tab
+//     cluster wraps onto its own second row (and possibly a third)
+//     below it, right-aligned via the same `ml-auto`. Tabs drop to
+//     text-sm with tighter padding so each row holds as many tabs
+//     as will fit rather than breaking one per line.
+//   • md+: single row, brand left, cluster right, tabs at full
+//     size.
 //
-// `flex-wrap` on the row is what enables the mobile wrap.
+// TWO nested wraps are needed, not one: the OUTER row wraps
+// (brand above, cluster below) and the CLUSTER itself also wraps
+// (tabs spilling onto a second line). Six tabs plus the theme
+// toggle need ~680px at full size, which exceeds a 375px phone
+// (343px) and even a 640px tablet (608px) — so the cluster can
+// never be one atomic row on small screens.
+//
 // `shrink-0` on the brand keeps it from being crushed.
 // `whitespace-nowrap` on each tab stops labels breaking mid-word.
 // ============================================================
@@ -70,15 +79,23 @@ export default function Navbar() {
             them to roughly the midpoint (splitting leftover
             space evenly between the two children), which is why
             they were sitting in the middle inside a centered
-            container. */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 sm:py-0 sm:h-16">
+            container.
+
+            Height: `md:h-16` fixes the nav to a single 64px row
+            once there IS one row to fix. Below `md` the height
+            is left to the content, because on a phone the
+            cluster wraps to two rows and a fixed 64px would
+            clip the second one. */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 md:py-0 md:h-16">
 
           {/* LEFT: brand → home. Slightly larger than typical
               (text-xl) so it holds its own against the row of
-              nav tabs; the accent period stays as the chip. */}
+              nav tabs; the accent period stays as the chip.
+              Steps down to text-lg on mobile so it leaves room
+              for the wrapped tab cluster below it. */}
           <button
             onClick={() => navigate(pathForTab('home'))}
-            className="text-xl sm:text-2xl font-semibold tracking-tight text-fg hover:text-accent-text transition-colors shrink-0"
+            className="text-lg md:text-2xl font-semibold tracking-tight text-fg hover:text-accent-text transition-colors shrink-0"
           >
             {personalInfo.name.split(' ')[0]}
             <span className="text-accent">.</span>
@@ -86,10 +103,34 @@ export default function Navbar() {
 
           {/* RIGHT: tab buttons + theme toggle.
               Tabs are bumped to text-base with more horizontal
-              padding (px-3 sm:px-4) so they read as first-class
-              destinations rather than auxiliary links. Gaps
-              widened from gap-1.5/gap-2 to gap-2/gap-3. */}
-          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+              padding (px-4) at `md` and above so they read as
+              first-class destinations rather than auxiliary
+              links. Below `md` they step down to text-sm with
+              tighter padding (px-2) so they still fit a phone.
+
+              RESPONSIVE: `flex-wrap` on the CLUSTER (not just on
+              the outer row) is what keeps the tabs reachable on a
+              phone. The outer row's wrap moves the cluster below
+              the brand, but the cluster itself was one atomic
+              row — six tabs plus the theme toggle need ~632px at
+              desktop sizing, and a 375px phone only has 343px. So
+              without an internal wrap, Education, Connect and the
+              theme toggle were silently clipped off the right
+              edge (`body { overflow-x: hidden }` hid the
+              scrollbar, so it looked like they were simply
+              missing).
+
+              Tabs also step down a size on mobile (text-sm,
+              tighter padding) so the first row of the wrapped
+              cluster holds as many as will fit rather than
+              breaking one-per-line. The step-up to desktop
+              sizing happens at `md` (768px), not `sm` (640px):
+              at full size the six tabs plus toggle need ~680px,
+              which does not fit a 640px tablet, so bumping at
+              `sm` would leave it wrapping on tablets for no
+              reason. `ml-auto` keeps the cluster right-aligned
+              on both rows. */}
+          <div className="flex flex-wrap items-center justify-end gap-x-2 md:gap-x-3 gap-y-1 ml-auto">
             {navTabs.filter((tab) => !tab.hidden).map((tab) => {
               const isActive = isActiveTab(pathname, tab.id);
               return (
@@ -97,7 +138,7 @@ export default function Navbar() {
                   key={tab.id}
                   onClick={() => navigate(pathForTab(tab.id))}
                   className={`
-                    px-3 sm:px-4 py-2 text-base font-medium rounded-md transition-all duration-200 whitespace-nowrap
+                    px-2 md:px-4 py-1.5 md:py-2 text-sm md:text-base font-medium rounded-md transition-all duration-200 whitespace-nowrap
                     ${isActive
                       ? 'bg-accent-soft text-accent-text border border-accent-border'
                       : 'text-fg-mute hover:text-fg hover:bg-bg-elevated border border-transparent'
@@ -108,7 +149,7 @@ export default function Navbar() {
                 </button>
               );
             })}
-            <div className="w-px h-7 bg-divider mx-1 sm:mx-2" aria-hidden="true" />
+            <div className="w-px h-7 bg-divider mx-0.5 md:mx-2" aria-hidden="true" />
             <ThemeToggle />
           </div>
 
