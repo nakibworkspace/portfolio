@@ -3,7 +3,7 @@
 //
 // Twelve Streamline-Pixel SVGs (32×32, pure #000 fills) drawn as
 // CSS `mask-image`s. The scatter container breaks out of the
-// `<main>` wrapper to the full viewport width (`w-screen` +
+// `<main>` wrapper to the full viewport width (`w-[100dvw]` +
 // `left-1/2 -translate-x-1/2`) so percentages are measured against
 // the actual screen, not the `max-w-6xl` content column. This is
 // what fills the empty side bands visible in the reference
@@ -92,12 +92,28 @@ export default function PixelScatter() {
   return (
     // Purely decorative — hidden from AT.
     //
-    // BREAKOUT: `w-screen left-1/2 -translate-x-1/2` widens the
+    // BREAKOUT: `left-1/2 -translate-x-1/2` + `w-[100dvw]` widens the
     // container to the full viewport, so positions are measured
     // against the actual screen, not the max-w-6xl content column.
     //
+    // The scrollbar: `w-screen` is 100vw, which INCLUDES the
+    // vertical scrollbar (~8px on desktop). The body reserves a
+    // scrollbar gutter (`scrollbar-gutter: stable` in index.css),
+    // so the visible client area is that much narrower and the
+    // container's right edge lands in the dead zone. The body
+    // clips it (`overflow-x: hidden`), so icons nearest the right
+    // edge were being cut by a few pixels.
+    //
+    // `w-[100dvw]` instead of `w-screen`: the `dvw` unit (dynamic
+    // viewport width) EXCLUDES the classic scrollbar where one is
+    // present, so the container matches the visible client width
+    // exactly. It falls back to `100vw` in any browser without
+    // `dvw` support, which is the old behaviour — no worse than
+    // before. Scrollbar widths vary by platform, so a hardcoded
+    // pixel correction would be wrong somewhere.
+    //
     // `h-[34rem]` caps the scatter to the hero's vertical span so
-    // nothing bleeds into the Stack section below.
+    // nothing bleeds into the Research strip below.
     //
     // POINTER EVENTS: the container itself is `pointer-events-none`
     // so it never swallows clicks meant for the hero text beneath it.
@@ -105,7 +121,7 @@ export default function PixelScatter() {
     // `pointer-events-auto` so it can still receive :hover.
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-screen h-[34rem] overflow-hidden select-none"
+      className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[100dvw] h-[34rem] overflow-hidden select-none"
     >
       {ICONS.map((icon, i) => (
         <span

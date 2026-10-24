@@ -29,9 +29,7 @@ export default function RevealOnScroll({
   // Default rootMargin: shrink the root rectangle 10% from the
   // bottom so elements trigger only when they've come up
   // ~one line into view. Looser than -100%, stricter than 0.
-  // Each call site can pass its own to tune this (e.g. the
-  // Stack uses a stricter margin so the reveal doesn't auto-
-  // fire when the element is already in view at mount).
+  // Each call site can pass its own to tune this.
   rootMargin = '0px 0px -10% 0px',
   threshold = 0.05,
   as: Tag = 'div',

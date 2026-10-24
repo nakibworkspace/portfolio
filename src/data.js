@@ -17,12 +17,15 @@ export const personalInfo = {
     name: "Nakib Ahmed Raj",
 
     // Big text shown on the Home section, below the name.
-    // Tailored for both PhD PIs (research direction) and
-    // industry MLOps folks (production scope).
-    headline: "MLOps engineer. I build the production plumbing under ML systems: pipelines, observability, streaming.",
+    // Reads as a researcher who ships, not an MLOps engineer who
+    // aspires. Names BOTH tracks so the hero does the routing work
+    // for a reader who never clicks anything else.
+    headline: "I build production ML systems for industry and run independent research on LLM training, alignment, and agent evaluation, and I am looking for where those two meet.",
 
-    // Small uppercase label above your name on Home
-    tagline: "ML/DataOps Engineer · PhD Aspirant",
+    // Small uppercase label above your name on Home.
+    // "PhD Aspirant" was here before — it reads as a status label
+    // rather than a research identity, so it was dropped.
+    tagline: "ML Systems Engineer · Independent NLP/LLM Research",
 
     role: "Junior Software Engineer",
     company: "Poridhi.io",
@@ -30,8 +33,9 @@ export const personalInfo = {
     location: "Dhaka, Bangladesh",
 
     // Short label for the home meta line. Shown inline with
-    // role · degree · location. Should be 2-4 words, no colon.
-    researchDirection: "Research: SE4AI",
+    // role · degree · location. Names the actual sub-areas so
+    // it's verifiable rather than a broad "SE4AI" label.
+    researchDirection: "Research: LLM alignment · NLP · agent eval · retrieval",
 
     // ← REPLACE with your real email
     email: "rajnakib2003@gmail.com",
@@ -55,9 +59,14 @@ export const personalInfo = {
   // the categorized skills list. Keep it conversational and short.
   // The array lets you split it into multiple paragraphs if you
   // want; each entry renders as its own <p>.
+  //
+  // Research-first ordering: the professor reads these two
+  // paragraphs before anything else, so they now lead with the
+  // research question and use the industry work as the bridge
+  // rather than the other way round.
   export const overview = [
-    "I work at the intersection of agentic systems and production ML. On the systems side: streaming pipelines with self-monitoring, drift detection wired into the same observability surface as model performance, and infrastructure that ships reproducibly through IaC. On the agentic side: workflows where agents write, validate, and execute against real data, not demos.",
-    "Research interests span ML, deep learning, and NLP applied to software engineering. Code generation, code review, program repair, and LLM agents for development workflows.",
+    "My research question: how do we evaluate and secure LLM agents that write and execute code in real environments, and what does it cost to make them reliable? I work on LLM training and alignment (pretraining, LoRA/QLoRA, DPO), inference efficiency (prefill/decode, KV cache), and agent evaluation and safety.",
+    "My industry work at Poridhi.io puts that question in contact with reality: shipping streaming pipelines, drift monitoring, and observability for models in production. That is the same problem in a different costume. A model that silently degrades in production is a model that fails an evaluation.",
   ];
 
 
@@ -78,23 +87,28 @@ export const personalInfo = {
       company: "Poridhi.io",
       period: "Jan 2025 — Present",
       scope: "Prototype & demo builds",
-      problem: "Built the MLOps and LLM tooling layer from a blank slate — pipelines, observability, and experimentation surface for client demos.",
+      problem: "Built the MLOps and LLM tooling layer from a blank slate: pipelines, observability, and experimentation surface for client demos.",
       focus: "Data Engineering, MLOps & LLMOps",
+      // The one line that turns a list of shipped tickets into a
+      // research source. It names the question the work raised,
+      // not the tasks: the bullets below already do that.
+      researchSignal:
+        "Every system here raised the same question my research now asks: how do you know an LLM-driven system is still correct after deployment, and can you measure it cheaply enough to run on every call?",
       points: [
         "Designed and shipped end-to-end streaming pipeline (Kafka → Flink) for a churn-detection demo, then re-used the template for a fraud-detection build.",
         {
           clientPoc: "Selected client POC · via Poridhi.io (NDA)",
-          text: "Built and deployed an embedding-generation POC for a partner organization — S3-triggered AWS Lambda orchestration, EC2-hosted SBERT embedding service (Flask, all-MiniLM-L6-v2), Qdrant vector DB on EC2, all provisioned with Terraform. (Project code, infrastructure, and metrics owned by the partner company.)",
+          text: "Built and deployed an embedding-generation POC for a partner organization: S3-triggered AWS Lambda orchestration, EC2-hosted SBERT embedding service (Flask, all-MiniLM-L6-v2), Qdrant vector DB on EC2, all provisioned with Terraform. (Project code, infrastructure, and metrics owned by the partner company.)",
         },
         {
           clientPoc: "Hands-on lab · via Poridhi.io (NDA)",
-          text: "Built a multi-cluster Elasticsearch hands-on lab for a partner organization — two clusters (Netflow IPlog and Netflow SysLog) queried via natural-language prompts translated to Elasticsearch DSL. Covered cluster health, mapping introspection, IP/port/time filtering, and aggregations through ~30 guided interactions. (Lab content and target clusters owned by the partner company.)",
+          text: "Built a multi-cluster Elasticsearch hands-on lab for a partner organization: two clusters (Netflow IPlog and Netflow SysLog) queried via natural-language prompts translated to Elasticsearch DSL. Covered cluster health, mapping introspection, IP/port/time filtering, and aggregations through ~30 guided interactions. (Lab content and target clusters owned by the partner company.)",
         },
         {
           clientPoc: "Internal platform build · via Poridhi.io (NDA)",
-          text: "Built a network analytics portal and AI-assisted analysis toolkit for a partner ISP — FastAPI web portal, ~12 analysis workflows spanning bandwidth / threat detection / SLA / compliance, integration with Loki, Grafana, and SNMP telemetry, plus an AI analysis layer for conversational queries against the live data. (Repo, infrastructure, and subscriber data owned by the partner company.)",
+          text: "Built a network analytics portal and AI-assisted analysis toolkit for a partner ISP: FastAPI web portal, ~12 analysis workflows spanning bandwidth / threat detection / SLA / compliance, integration with Loki, Grafana, and SNMP telemetry, plus an AI analysis layer for conversational queries against the live data. (Repo, infrastructure, and subscriber data owned by the partner company.)",
         },
-        "Integrated Evidently AI for data & concept drift monitoring and Langfuse for LLM-pipeline tracing — both wired into the same demo harness so a reviewer can see the full observability surface in one place.",
+        "Integrated Evidently AI for data & concept drift monitoring and Langfuse for LLM-pipeline tracing, both wired into the same demo harness so a reviewer can see the full observability surface in one place.",
         "Standardized experiment tracking via MLflow across the demo projects; configured artifact logging, parameter comparison, and run lineage.",
         "Containerized ML microservices with Docker and stood up the AWS infrastructure (EC2, S3, EKS) through Pulumi IaC so the same stack could be re-deployed for any new client demo.",
       ],
@@ -106,6 +120,8 @@ export const personalInfo = {
       scope: "Internship",
       problem: "Wanted hands-on context with production-grade data tooling before committing to a full-time MLOps role.",
       focus: "Data Engineering",
+      researchSignal:
+        "It was here that I first saw data quality and pipeline correctness treated as engineering problems rather than data problems: the same instinct that later made me ask how an agent's output should be verified rather than trusted.",
       points: [
         "Built batch ETL pipelines with Apache Airflow and Apache Spark against AWS S3, orchestrated via Docker containers.",
         "Wrote PySpark jobs for parquet transformations and columnar aggregations on multi-GB sample datasets; used Polars for in-process exploration where its lazy query engine was a better fit.",
@@ -116,78 +132,311 @@ export const personalInfo = {
   ];
 
 
-  // ─── RESEARCH ────────────────────────────────────────────
-  // Each object = one research item (thesis, ongoing project, paper).
-  //   links: array of { label, href }. Rendered as "↗ Label"
-  //     under the description. Leave empty if nothing to link yet.
-  export const research = [
+  // ─── RESEARCH STATEMENT ───────────────────────────────────
+  // The research programme in one place: the area, the question,
+  // and the threads it breaks into. Rendered on /research/agenda
+  // and (condensed) on the homepage.
+  export const researchStatement = {
+    area: "Reliable LLM Systems: alignment, inference efficiency, agent evaluation, and grounded generation",
+    summary:
+      "I am interested in what it takes for an LLM-driven system to be trustworthy after it leaves the notebook: does it stay aligned to its task under adversarial input, does it stay cheap enough to run at scale, and does anyone actually measure whether it works.",
+    threads: [
+      {
+        title: "Alignment under compute constraints",
+        body: "Parameter-efficient alignment (LoRA/QLoRA) and preference optimization (DPO) on small open-weight models: how much alignment signal do you get per unit of compute, and where does it break down?",
+        evidence: ["qlora-dpo-study", "minitorch-autograd"],
+      },
+      {
+        title: "Inference efficiency as a systems problem",
+        body: "Prefill/decode asymmetry and KV-cache behaviour, studied from the serving side: the same attention that a systems engineer treats as a memory-layout problem determines whether an agentic loop is affordable.",
+        evidence: ["kv-cache-prefill-decode"],
+      },
+      {
+        title: "Evaluation and safety of code-writing agents",
+        body: "How do you measure whether an LLM agent that writes and runs code is correct and safe? Building evaluation harnesses that catch silent failures rather than just report benchmark scores.",
+        evidence: ["agent-eval-safety-study"],
+      },
+      {
+        title: "Retrieval quality behind grounded generation",
+        body: "A similarity score is not evidence that the right document was retrieved. Studying how much of the answer quality is decided before the model sees anything, and how much a reranking stage can recover when the first pass misses.",
+        evidence: ["rag-retrieval-reranking"],
+      },
+    ],
+  };
+
+
+  // ─── THE BRIDGE ───────────────────────────────────────────
+  // Explicit mapping from industry experience → the research
+  // question it raised → the research work that answers it.
+  // This is the artifact that answers "how do your industry
+  // experiences feed into research?" — rendered in full on
+  // /research/agenda.
+  export const bridge = [
     {
-      type: "Side Interest",
+      industry: "Streaming pipelines with drift detection wired into the same observability surface as model performance (Poridhi.io)",
+      question: "If drift is a production signal, what is the equivalent signal for an agent's correctness, and can it be measured cheaply enough to run on every call?",
+      research: "Agent evaluation & safety study: an evaluation harness that scores agent runs against executable checks rather than human review.",
+      link: "/research#agent-eval-safety-study",
+    },
+    {
+      industry: "Embedding-generation POC and vector retrieval stack: SBERT service, Qdrant, retrieval pipelines (Poridhi.io)",
+      question: "Retrieval quality is usually reported as a similarity score. Does the ranking actually reflect task usefulness, and how sensitive is it to embedding model choice?",
+      research: "RAG retrieval + reranking study: LLM-judge vs cross-encoder reranking compared on the same candidate set.",
+      link: "/research#rag-retrieval-reranking",
+    },
+    {
+      industry: "Low-latency serving with Redis caching and self-hosted inference on EC2 (Poridhi.io)",
+      question: "Latency budgets for agentic loops are spent in prefill and KV-cache growth, not in the model call. What does that do to agent design decisions?",
+      research: "Prefill/decode + KV cache study: a cost model for multi-step agent loops under a constrained serving budget.",
+      link: "/research#kv-cache-prefill-decode",
+    },
+  ];
+
+
+  // ─── PUBLICATIONS & MANUSCRIPTS ────────────────────────────
+  // Work that was written up and submitted. These carry more
+  // weight than the investigations below, so they live in
+  // their own list and get their own section on /research.
+  //
+  //   status: 'Under Review' | 'Published' | 'Accepted' |
+  //           'Preprint' | 'Manuscript in Preparation'
+  //
+  // ⚠️ HONESTY GATE: 'Under Review' may ONLY be used once the
+  // manuscript has actually been submitted somewhere. Until
+  // then use 'Manuscript in Preparation'. See
+  // RESEARCH_BACKLOG.md → P1 for the checklist.
+  export const publications = [
+    {
+      title: "Online Harassment Detection using Neural NLP Approaches",
+      authors: "Nakib Ahmed Raj (first author)",
+      venue: "Manuscript prepared for submission",
+      status: "Manuscript in Preparation",
+      year: "2025",
+      type: "Manuscript",
+      abstract:
+        "Transformer-based architectures for classifying toxic and harassing content in Bengali and English online discourse, with evaluation on benchmark harassment datasets.",
+      links: [
+        // { label: "Thesis PDF", href: "/projects/thesis.pdf" },
+      ],
+      // What is actually true about this item today.
+      note: "Undergraduate thesis, extended with additional baselines and ablations and reformatted as a manuscript.",
+    },
+  ];
+
+
+  // ─── ACTIVE INVESTIGATIONS ────────────────────────────────
+  // Self-initiated, ongoing research. Each entry names the
+  // question, the approach, and — once they exist — the
+  // findings.
+  //
+  // ⚠️ HONESTY GATE: `findings` stays null until there are real
+  // measured numbers to quote. A null findings renders NOTHING
+  // on the page — no placeholder, no "no findings yet". That
+  // silence is deliberate: an investigation with a sharp
+  // question and a solid method but no results yet reads as
+  // research in progress, which is exactly right.
+  // See RESEARCH_BACKLOG.md → P2–P5 for the checklists.
+  export const investigations = [
+    {
+      id: "qlora-dpo-study",
+      title: "Preference Optimization on Small Open-Weight Models",
+      status: "In Progress",
+      period: "2026 — present",
+      question:
+        "How much alignment signal can be extracted per unit of compute using parameter-efficient methods (LoRA/QLoRA) combined with DPO, versus a LoRA-only baseline?",
+      approach:
+        "QLoRA adaptation on quantized base weights, preference-pair datasets, DPO objective, compared against a LoRA-only baseline on the same base model and data. Runs tracked with experiment logging rather than ad-hoc invocations.",
+      findings: null,
+      tags: ["LoRA", "QLoRA", "DPO", "Alignment", "PEFT", "Hugging Face"],
+      links: [
+        // { label: "Notes & Code", href: "https://github.com/nakibworkspace/<repo>" },
+      ],
+    },
+    {
+      id: "kv-cache-prefill-decode",
+      title: "Prefill/Decode Asymmetry and KV-Cache Behaviour",
+      status: "In Progress",
+      period: "2026 — present",
+      question:
+        "Why does agentic inference cost more in memory bandwidth than in FLOPs, and how does KV-cache growth compound across a multi-step tool-use loop?",
+      approach:
+        "Characterising prefill as compute-bound and decode as bandwidth-bound; measuring how KV-cache size scales with sequence length and batch size; deriving an effective cost model for agent loops under a fixed serving budget.",
+      findings: null,
+      tags: ["Inference", "KV Cache", "Prefill/Decode", "Serving", "Performance"],
+      links: [
+        // { label: "Notes & Code", href: "https://github.com/nakibworkspace/<repo>" },
+      ],
+    },
+    {
+      id: "agent-eval-safety-study",
+      title: "Evaluation and Safety of Code-Executing LLM Agents",
+      status: "In Progress",
+      period: "2026 — present",
+      question:
+        "How can we tell whether an LLM agent that generates and runs code is correct and safe, without relying on human review of every execution?",
+      approach:
+        "Building an evaluation harness that scores agent runs against executable checks (test-case pass rate, sandboxed-execution safety signals, and refusal behaviour under adversarial input) rather than surface-level similarity metrics.",
+      findings: null,
+      tags: ["Agent Evaluation", "AI Safety", "Code Agents", "Sandboxing", "Red Teaming"],
+      links: [
+        // { label: "Notes & Code", href: "https://github.com/nakibworkspace/<repo>" },
+      ],
+    },
+    {
+      id: "minitorch-autograd",
+      title: "MiniTorch: A Deep Learning Framework Built From Scratch",
+      status: "Completed",
+      period: "2026",
+      question:
+        "What actually sits underneath PyTorch's API? Building the tensor layer, automatic differentiation, and a parameter system from scratch is the fastest way to find out.",
+      approach:
+        "Implemented a broadcasting-aware tensor type, the operator layer (elementwise ops, reductions, the full functional map/reduce/zipWith set), a reverse-mode automatic differentiation engine, an `nn` layer library, SGD/Adam optimisers, and a `Module` system for parameter management. Each is backed by a test suite, with property-based Hypothesis tests asserting the same contracts PyTorch satisfies. Includes CUDA kernels for the fast paths, a parallel correctness check against PyTorch, and MNIST training runs.",
+      findings:
+        "Differential testing against PyTorch (same input, both implementations) surfaced the exact points where broadcasting semantics and gradient accumulation quietly diverge, the class of bug that stays invisible until the framework is yours. Property-based testing caught edge cases that fixed example tests missed.",
+      tags: ["Autograd", "PyTorch Internals", "Tensor Libraries", "Property-Based Testing", "Hypothesis", "CUDA"],
+      links: [
+        { label: "Repository", href: "https://github.com/nakibworkspace/minitorch-fundamentals" },
+      ],
+    },
+    {
+      id: "rag-retrieval-reranking",
+      title: "Retrieval Quality and Reranking for Grounded Generation",
+      status: "Exploring",
+      period: "2025 — present",
+      question:
+        "Retrieval quality is usually reported as a similarity score. Does the ranking actually reflect task usefulness, and how sensitive is it to the embedding model and the reranking stage?",
+      approach:
+        "Comparing retrieval strategies on a shared candidate set: baseline vector retrieval against multi-query expansion, HyDE, and corrective retrieval with a reranking stage (cross-encoder versus LLM-judge). Measuring how often the correct source falls out of the top-k, and what each reranker recovers from that baseline miss.",
+      findings: null,
+      tags: ["RAG", "Retrieval", "Reranking", "Vector Search", "Grounded Generation"],
+      links: [
+        // { label: "Notes & Code", href: "https://github.com/nakibworkspace/<repo>" },
+      ],
+    },
+    {
+      id: "vlm-spatial-reasoning",
       title: "Vision-Language Models for Spatial Reasoning",
       status: "Exploring",
-      description: "Reading and occasional prototyping around how Vision-Language Models can ground language in physical or visual spatial tasks — an adjacent interest to my primary SE4AI direction.",
-      tags: ["VLMs", "Spatial Reasoning", "Multimodal Learning"],
+      period: "2025 — present",
+      question:
+        "Can VLMs ground language in physical spatial relations reliably enough to be useful for engineering inspection and industrial visual tasks?",
+      approach:
+        "Surveying spatial-reasoning benchmarks and probing how CLIP/BLIP-2-style encoders handle relational queries, with a focus on transfer to the industrial-defect setting below.",
+      findings: null,
+      tags: ["VLMs", "Spatial Reasoning", "Multimodal", "CLIP"],
       links: [
         // { label: "Notes", href: "" },
       ],
     },
     {
-      type: "Side Interest",
-      title: "Surface Detection of Steel using YOLO and ResNet",
-      status: "Completed",
-      description: "Detected surface defects on steel sheets by combining YOLO for real-time defect localisation with a ResNet classifier for fine-grained defect categorisation. Explored how a hybrid two-stage CV pipeline compares against a single end-to-end detector on industrial surface-defect benchmarks.",
+      id: "steel-defect-detection",
+      title: "Surface Defect Detection on Steel using YOLO + ResNet",
+      status: "Manuscript in Preparation",
+      period: "2025 — present",
+      question:
+        "Does a two-stage pipeline (YOLO for localisation, ResNet for fine-grained classing) outperform a single end-to-end detector on industrial surface-defect benchmarks?",
+      approach:
+        "Trained and compared both pipelines on industrial surface-defect datasets, evaluating the localisation-versus-classification trade-off between them. The comparison is being written up as a manuscript.",
+      findings: null,
       tags: ["Computer Vision", "YOLO", "ResNet", "Defect Detection", "Industrial AI"],
       links: [
         // { label: "Notes", href: "" },
       ],
     },
     {
-      type: "Undergraduate Thesis",
-      title: "Online Harassment Detection using Neural NLP Approaches",
-      status: "Completed",
-      description: "Applied transformer-based neural architectures for classifying toxic and harassing content in Bengali and English online discourse, achieving strong performance on benchmark datasets.",
-      tags: ["NLP", "Transformers", "Toxic Content Detection", "Bengali NLP"],
-      links: [
-        // { label: "Thesis PDF", href: "" },
-      ],
+      // ── NOT ON THE SITE YET ────────────────────────────────
+      // Slot reserved for GPU kernel work (CUDA/Triton). Nothing
+      // about this ships until there is an actual repo with
+      // benchmarks — see RESEARCH_BACKLOG.md → P6.
+      id: "gpu-kernels-study",
+      hidden: true,
+      title: null,
     },
-    // ← ADD MORE RESEARCH HERE (publications, preprints, etc.)
   ];
 
 
   // ─── TECHNICAL SKILLS ──────────────────────────────────────
   // Each key = a category name (shown as a section heading on Home).
-  //   mark: 'shipped' | 'research' | 'learning'
-  //     shipped = used in production code I've shipped
-  //     research = used for research / thesis work
-  //     learning = currently exploring, not yet shipped
+  //   mark: 'research' | 'shipped' | 'working'
+  //     research = used in my own research investigations
+  //     shipped  = used in production systems I've shipped
+  //     working  = studied the theory and implemented it at
+  //                small-to-medium scale — NOT an expertise claim.
+  //                This third state exists so honest mid-level
+  //                knowledge isn't inflated into either extreme.
   //   items: skill names shown as a flowing list under the category.
+  //
+  // ORDER MATTERS: research categories come first. A professor
+  // scanning the Stack table lands on the top rows, so the top
+  // rows should be the research ones. Engineering rows follow.
+  //
+  // HONESTY GATE: a `research` mark means the skill is backed by a
+  // row in the Claim -> Artifact Index with a real artifact behind it.
+  // As of the current state of the work, exactly two categories
+  // clear that bar:
+  //   - MiniTorch   -> nakibworkspace/minitorch-fundamentals
+  //   - NLP         -> the thesis manuscript (under repair, being
+  //                    written up; not yet submitted)
+  // Everything else in the research track is still `In Progress`
+  // with no published repo, so it is marked `working` — studied the
+  // theory, implemented at small-to-medium scale, no artifact yet.
+  // Those rows get promoted to `research` the moment a repo lands.
+  // The rule is enforced by RESEARCH_PLAN.md section 9.
   export const skills = {
-    "Orchestration":       { mark: "shipped",  items: ["Apache Airflow", "MLflow", "Prefect"] },
-    "Data Engineering":    { mark: "shipped",  items: ["Apache Spark", "Apache Kafka", "Apache Flink", "SQL", "dbt", "Clickhouse", "Polars"] },
-    "Infrastructure":      { mark: "shipped",  items: ["AWS (EC2, S3, EKS, Lambda)", "Docker", "Kubernetes", "Pulumi (IaC)"] },
-    "ML Monitoring":       { mark: "shipped",  items: ["Evidently AI", "MLflow Tracking", "Custom Metrics", "Prometheus", "Grafana", "OpenObserve"] },
-    "Observability & Logs":{ mark: "shipped",  items: ["Loki", "Observium (SNMP)", "LogQL", "MinIO (S3)"] },
-    "Backend & APIs":      { mark: "shipped",  items: ["FastAPI", "PostgreSQL", "REST APIs"] },
-    "Vector & Search":     { mark: "shipped",  items: ["Qdrant", "Elasticsearch", "SBERT (sentence-transformers)", "Vector embeddings"] },
-    "Agentic Workflows":   { mark: "shipped",  items: ["LangChain", "LangGraph", "LangSmith", "Langfuse", "W&B"] },
-    "ML Research":         { mark: "research", items: ["PyTorch", "Hugging Face Transformers", "VLMs (CLIP / BLIP-2)"] },
-    "Currently exploring": { mark: "learning", items: ["Harness Engineering", "Efficient Agentic AI usages"] },
+    // ── RESEARCH FIRST ── "what has this person actually done?"
+    // MiniTorch is a completed from-scratch deep learning library
+    // — tensor type, autograd engine, nn layers, optimisers, module
+    // system, CUDA kernels, and differential tests against PyTorch.
+    // Public repo, so this is the one unambiguously artifact-backed
+    // research row.
+    "Systems & Frameworks":      { mark: "research", items: ["MiniTorch (from-scratch DL framework)", "Autograd", "Property-Based Testing", "Differential Testing"] },
+    // The thesis is real work with a real artifact behind it (the
+    // notebook), and it is being written up as a manuscript. Marked
+    // `research` on that basis — the submission itself is pending,
+    // and the site says so honestly on the Research page.
+    "NLP":                       { mark: "research", items: ["SBERT (sentence-transformers)", "Toxicity & Harassment Classification", "Multi-class NLP"] },
+
+    // ── RESEARCH TRACK, IN PROGRESS ── real direction, no published
+    // artifact yet, so `working` rather than `research`. These are the
+    // rows that become `research` as each investigation ships.
+    "LLM Alignment & Training": { mark: "working", items: ["LoRA", "QLoRA", "DPO", "Parameter-Efficient Fine-Tuning", "PEFT", "Pretraining"] },
+    "Efficient Inference":       { mark: "working", items: ["Prefill/Decode", "KV Cache", "Attention Mechanisms", "Quantization"] },
+    "Agent Evaluation & Safety": { mark: "working", items: ["Agent Evaluation Harnesses", "Sandboxed Execution", "Adversarial Testing", "Red-Teaming", "AI Safety"] },
+
+    // ── ENGINEERING ── "can they build it?"
+    "Orchestration":        { mark: "shipped", items: ["Apache Airflow", "MLflow", "Prefect"] },
+    "Data Engineering":     { mark: "shipped", items: ["Apache Spark", "Apache Kafka", "Apache Flink", "SQL", "dbt", "ClickHouse", "Polars"] },
+    "Infrastructure":       { mark: "shipped", items: ["AWS (EC2, S3, EKS, Lambda)", "Docker", "Kubernetes", "Pulumi (IaC)", "Terraform"] },
+    "ML Monitoring":        { mark: "shipped", items: ["Evidently AI", "MLflow Tracking", "Custom Metrics", "Prometheus", "Grafana", "OpenObserve"] },
+    "Observability & Logs": { mark: "shipped", items: ["Loki", "Observium (SNMP)", "LogQL", "MinIO (S3)"] },
+    "Backend & APIs":       { mark: "shipped", items: ["FastAPI", "PostgreSQL", "REST APIs"] },
+    "Vector & Search":      { mark: "shipped", items: ["Qdrant", "Elasticsearch", "Vector embeddings"] },
+    "Agentic Workflows":    { mark: "shipped", items: ["LangChain", "LangGraph", "LangSmith", "Langfuse", "W&B"] },
+
+    // ── STUDIED, IMPLEMENTED SMALL-SCALE ── CV and VLMs: real prior
+    // work (thesis-adjacent coursework and prototypes), but no
+    // published repo behind the claims, so `working`.
+    "Computer Vision":       { mark: "working", items: ["YOLO", "ResNet", "Transfer Learning"] },
+    "Multimodal & Retrieval": { mark: "working", items: ["VLMs (CLIP / BLIP-2)", "Vector Search", "Reranking"] },
+    "ML Research":            { mark: "working", items: ["PyTorch", "Transformer Architectures", "Fine-tuning"] },
+
+    // ── CURRENTLY STUDYING ── theory read, no implementation yet
+    "Currently studying": { mark: "working", items: ["LLM Agent Evaluation Harnesses", "Agentic AI Security", "Efficient Agentic AI usages", "Harness Engineering"] },
   };
 
   // Map each mark to a palette token used by the Home list.
-  // 'shipped' = accent crimson, 'research' = sky-light blue,
-  // 'learning' = muted fg grey.
+  // 'research' = sky-light blue, 'shipped' = accent crimson,
+  // 'working' = muted fg grey.
   export const markColor = {
-    shipped:  'var(--accent)',
     research: 'var(--sky-light)',
-    learning: 'var(--fg-mute)',
+    shipped:  'var(--accent)',
+    working:  'var(--fg-mute)',
   };
 
   export const markLabel = {
-    shipped:  'shipped',
     research: 'research',
-    learning: 'learning',
+    shipped:  'shipped',
+    working:  'working',
   };
 
 
@@ -215,7 +464,7 @@ export const personalInfo = {
       ],
       // One-line pointer to where I am heading next — read by
       // PI's during a 30-second portfolio scan.
-      currentFocus: "LLM agents for code generation & review · NLP for program repair · ML on logs & developer artifacts · multimodal models for software documentation",
+      currentFocus: "LLM alignment & preference optimization · inference efficiency (prefill/decode, KV cache) · evaluation and safety for code-executing agents · multimodal spatial reasoning",
       highlights: [
         "Thesis: Online Harassment Detection using Neural NLP Approaches",
       ],
@@ -233,19 +482,19 @@ export const personalInfo = {
   //            section's problem field for consistency
   export const leadership = [
     {
-      role: "Lead Organizer — MIE Robolution 1.0",
+      role: "Lead Organizer, MIE Robolution 1.0",
       institution: "Department of Mechatronics & Industrial Engineering, CUET",
       period: "May 2025",
       scope: "National competition",
       logo: "/projects/robolution.jpg",
-      problem: "Took a fresh department-wide initiative from blank page to a three-day national robotics festival — the first edition, with no playbook to copy from.",
+      problem: "Took a fresh department-wide initiative from blank page to a three-day national robotics festival: the first edition, with no playbook to copy from.",
       points: [
         "Led end-to-end organisation of MIE Robolution 1.0, CUET's three-day national robotics festival (8–10 May 2025), drawing 700+ students from 41+ universities across Bangladesh.",
         "Coordinated seminars, competitions, a project showcase, and closing ceremony; ran flagship tracks including Soccer Bot, Line Following Robot, CAD modelling, and Techathon (CUET's first on-site hardware-software hybrid hackathon).",
       ],
     },
     {
-      role: "Chair — IEEE Computer Society Student Branch",
+      role: "Chair, IEEE Computer Society Student Branch",
       institution: "CUET",
       period: "2023 — 2024",
       points: [
@@ -575,9 +824,16 @@ export const personalInfo = {
   // ─── PROJECTS / GITHUB REPOS ───────────────────────────────
   // Each object = one project card.
   // Set "demo" to a URL if you have a live demo, or keep it null.
+  //
+  // `track` splits the list so a reader can tell client delivery
+  // apart from self-driven work:
+  //   'industry'  → client/industry delivery (Poridhi.io work)
+  //   'research'  → self-initiated investigation
+  //   'both'      → bridges the two
   export const projects = [
     {
       title: "Credit Card Approval Prediction",
+      track: "industry",
       description: "End-to-end MLOps pipeline for credit card approval prediction. Covers data preprocessing, automated training with Airflow + MLflow, FastAPI model serving with Redis caching, a Grafana/Prometheus monitoring stack, AWS infrastructure provisioned via Pulumi, and CI/CD to three EC2 instances via GitHub Actions. Same project was built incrementally across five labs.",
       tags: ["Airflow", "MLflow", "FastAPI", "Redis", "Grafana", "Pulumi", "GitHub Actions", "Docker"],
       github: "https://github.com/nakibworkspace/card-approval-prediction-mlops",
@@ -587,20 +843,23 @@ export const personalInfo = {
     },
     {
       title: "Serving NLP and CV model using FastAPI on AWS EC2",
+      track: "both",
       description: "Serving two different services on AWS using FastAPI for a R&D project",
       tags: ["NLP", "CV", "FastAPI", "Docker", "AWS"],
       github: "https://github.com/nakibworkspace/fastapi-nlp-cv-serving",
       demo: null,
     },
     {
-      title: "Learning Minitorch",
-      description: "Building a Machine Learning Framework for matrix computation",
-      tags: ["Python", "AutoGrad"],
+      title: "MiniTorch: Deep Learning Framework From Scratch",
+      track: "research",
+      description: "A deep learning framework built from scratch to understand what sits underneath PyTorch's API: a broadcasting-aware tensor type, a reverse-mode automatic differentiation engine, an nn layer library, SGD/Adam optimisers, a Module system for parameter management, and CUDA kernels for the fast paths. Every layer is backed by a test suite — including property-based Hypothesis tests asserting the same contracts PyTorch satisfies, and a differential test that runs both implementations on the same input to check they agree.",
+      tags: ["Python", "PyTorch Internals", "Autograd", "CUDA", "Hypothesis"],
       github: "https://github.com/nakibworkspace/minitorch-fundamentals",
       demo: null,
     },
     {
       title: "Data Lake and Warehouse Management",
+      track: "industry",
       description: "Four R&D labs covering the modern data stack end-to-end: a ClickHouse + dbt + Grafana + Prometheus analytics warehouse on NYC taxi data, a PostgreSQL star-schema warehouse with BRIN indexes and materialized views, a Spark-on-S3 data lake ingestion pipeline in Bronze-Silver-Gold, and a unified lakehouse that lands NYC taxi data through Spark and aggregates into ClickHouse.",
       tags: ["PostgreSQL", "ClickHouse", "dbt", "Apache Spark", "AWS S3", "Grafana", "Prometheus", "Medallion"],
       github: "https://github.com/nakibworkspace/datalake-management/tree/main",
@@ -610,6 +869,7 @@ export const personalInfo = {
     },
     {
       title: "Chatbot Observability with Langfuse",
+      track: "research",
       description: "Python CLI chatbot instrumented with Langfuse for full-stack LLM observability — every call is auto-traced via @observe, spans flush on exit, and a Puku skill lets you query traces, debug errors, and audit prompts in natural language. Walks through project structure, the @observe integration pattern, Langfuse UI views, and the Puku skill workflow.",
       tags: ["Langfuse", "Python", "CLI", "Observability", "Puku Skills"],
       github: "https://github.com/nakibworkspace/chatbot-observability",
@@ -619,6 +879,7 @@ export const personalInfo = {
     },
     {
       title: "Fraud Detection Pipeline",
+      track: "industry",
       description: "End-to-end fraud detection system on AWS: MongoDB data store, Feast feature store, Airflow feature engineering pipeline, MLflow model registry, and a model training pipeline tracking XGBoost, LightGBM, and Isolation Forest. Same project was built incrementally across five labs.",
       tags: ["MongoDB", "Feast", "Airflow", "MLflow", "Pulumi", "AWS", "XGBoost", "LightGBM"],
       github: "https://github.com/nakibworkspace/Fraud-detection-pipeline",
@@ -628,6 +889,7 @@ export const personalInfo = {
     },
     {
       title: "RAG-based Knowledge Retrieval System",
+      track: "both",
       description: "End-to-end Retrieval-Augmented Generation pipeline with vector embeddings, semantic search, and LLM-powered answer synthesis. Deep dived into advance RAG systems such as chunking strategies, indexing, Retrievals, Agentic RAG, CRAG as well",
       tags: ["RAG", "LangChain", "FastAPI", "Langfuse", "Vector DB"],
       github: "https://github.com/nakibworkspace/rag-labs",
@@ -637,6 +899,7 @@ export const personalInfo = {
     },
     {
       title: "FastAPI + Postgres + Alembic Migration Demo",
+      track: "industry",
       description: "Single-app Docker Compose stack demonstrating a FastAPI service talking to Postgres with Alembic-driven migrations — environment templated, health endpoint, and CRUD surface for users and items. Built as a reference pattern for clean migration jobs.",
       tags: ["FastAPI", "PostgreSQL", "Alembic", "Docker Compose"],
       github: null,
@@ -645,6 +908,7 @@ export const personalInfo = {
     },
     {
       title: "Ride-Sharing Natural Language Analytics",
+      track: "research",
       description: "Agentic analytics layer for ride-sharing data. Ask a question in plain English — \"traffic in Airport\", \"top 5 destinations by rides\", \"cancellation rate\" — and an AI agent writes the SQL, validates it, runs it against a Postgres warehouse, picks the right chart, and ships a live Metabase dashboard. Built with Puku CLI skills for the agent orchestration, PostgreSQL as the warehouse, and Metabase for the front-end dashboard surface.",
       tags: ["Puku CLI", "Agentic AI", "PostgreSQL", "Metabase", "NL2SQL", "Analytics"],
       github: "https://github.com/nakibworkspace/Natural-Language-Analytics/tree/main",
@@ -678,8 +942,12 @@ export const personalInfo = {
   // id "projects" maps to /projects, id "home" maps to /.
   export const navTabs = [
     { id: "home",       label: "Home" },
-    { id: "experience", label: "Experience" },
+    // Research sits SECOND, before Experience. The tab bar is a
+    // table of contents, and a professor's first click should
+    // land on the research track. No extra tab is added —
+    // the navbar already wraps to a second row on mobile.
     { id: "research",   label: "Research" },
+    { id: "experience", label: "Experience" },
     { id: "projects",   label: "Projects" },
     { id: "education",  label: "Education" },
     { id: "connect",    label: "Connect" },

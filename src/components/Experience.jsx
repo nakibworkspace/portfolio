@@ -67,6 +67,25 @@ export default function Experience() {
                   </p>
                 )}
 
+                {/* RESEARCH SIGNAL — the line that turns a list of
+                    shipped tickets into a research source. It names
+                    the QUESTION the work raised, not the tasks (the
+                    bullets below already do that).
+
+                    Rendered in the accent tone and set apart from
+                    `problem` so the reader registers it as a
+                    different kind of statement: `problem` is
+                    context, this is the research thread that
+                    continues past the job. */}
+                {exp.researchSignal && (
+                  <p
+                    className="mt-4 max-w-3xl text-sm italic leading-relaxed"
+                    style={{ color: 'var(--accent-text)' }}
+                  >
+                    {exp.researchSignal}
+                  </p>
+                )}
+
                 {/* Row 3: bullets (no card — just text).
                     Each point can be a plain string OR an object
                     { text, clientPoc? } — if clientPoc is set, a

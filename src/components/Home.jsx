@@ -8,25 +8,57 @@
 //   4. Headline (real, now defined in data.js)
 //   5. One-line plain-text meta (no emoji chips)
 //   6. Overview blurb (jersey-10)
-//   7. Stack — categorized skills list with annotation dots
-//      (shipped / research / learning) — scannable, no JS
-//   8. Social links (GitHub, LinkedIn, Email)
+//   7. RESEARCH STRIP — one compact block: focus line, manuscript
+//      status, active investigations, and links out
+//   8. Stack — categorized skills list with annotation dots
+//      (research / shipped / working) — scannable, no JS
+//   9. Social links (GitHub, LinkedIn, Email)
+//
+// MOTION — blocks 7 and 8 share one arrival treatment so the
+// page reads as a single continuous scroll rather than two
+// differently-animated sections: the block rises (`stack-rise`),
+// the section title grows from 0.5× (`stack-label`), and the
+// rows fade up in sequence. The keyframes live in index.css and
+// are neutralised under `prefers-reduced-motion`.
+//
+// DESIGN NOTE — this page is deliberately NOT growing. An earlier
+// plan floated a dual-track strip, a bridge preview, and a
+// publications strip as three separate blocks; that would have
+// turned the landing page into a wall of text. All three
+// collapsed into ONE compact research strip below the overview.
+// The detail lives on /research and /research/agenda, where
+// there is room for it.
 //
 // All colors are theme tokens — works in both dark and light.
 // ============================================================
 
-import { personalInfo, education, overview, skills, markColor, markLabel } from '../data';
+import { useNavigate } from 'react-router-dom';
+import {
+  personalInfo, education, overview, skills, markColor, markLabel,
+  researchStatement, publications, investigations,
+} from '../data';
 import PixelScatter from './PixelScatter';
 import RevealOnScroll from './RevealOnScroll';
 
 export default function Home() {
   const edu = education[0];
+  const navigate = useNavigate();
 
   // Letterfall — each character of the name fades up in sequence.
   // Capped at 10 so a long name doesn't push the total past ~600ms;
   // the whole thing has to feel instant, not choreographed.
   const nameChars = personalInfo.name.split('');
   const NAME_STAGGER = 0.045;
+
+  // The manuscript line reads from the data, never from a
+  // hardcoded string — so flipping `publications[0].status` in
+  // data.js also updates the homepage. A hardcoded "under review"
+  // here would be a claim that could silently drift out of sync
+  // with the truth.
+  const pub = publications[0];
+  const activeCount = investigations.filter(
+    (i) => !i.hidden && i.status === 'In Progress'
+  ).length;
 
   return (
     <section className="relative flex flex-col items-center text-center pt-8 pb-16 sm:pt-12 sm:pb-20">
@@ -77,18 +109,46 @@ export default function Home() {
         {personalInfo.headline}
       </p>
 
-      {/* META — one line, plain text, no emoji chips */}
+      {/* META — one line on desktop, wraps to two or three on a
+          phone. Plain text, no emoji chips.
+
+          The `whitespace-nowrap` that used to sit here was
+          actively harmful: on a flex container it makes every
+          child inline-level and forms one unbreakable line box,
+          which made the adjacent `flex-wrap` inert. The line is
+          ~168 characters (~1430px), so it overflowed the viewport
+          at EVERY width — 375px, 768px, and even on a 1440px
+          desktop where the reading column is only 1152px. The
+          body hides the resulting scrollbar, so the overflow was
+          invisible: the tail of the line was simply clipped away.
+
+          Without the nowrap, `flex-wrap` does what it says and
+          the segments stack cleanly at narrow widths. Each
+          segment stays unbroken on its own (they are short).
+
+          The `·` separators are bound to the segment that FOLLOWS
+          them rather than sitting as standalone flex items.
+          As standalone items a separator could land at the start
+          of a wrapped line, reading as a stray bullet; bound to
+          the following segment, it always leads its segment and
+          the two always wrap together. */}
       <div
-        className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-base text-fg-dim whitespace-nowrap lift-in"
+        className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-base text-fg-dim lift-in"
         style={{ animationDelay: `${0.1 + nameChars.length * NAME_STAGGER + 0.35}s` }}
       >
         <span>{personalInfo.role} <span className="text-accent-text">@ {personalInfo.company}</span></span>
-        <span className="text-sky-dark" aria-hidden="true">·</span>
-        <span>{edu.degree} <span className="text-accent-text">@ {edu.institution.match(/\(([^)]+)\)/)?.[1] || 'CUET'}</span></span>
-        <span className="text-sky-dark" aria-hidden="true">·</span>
-        <span>{personalInfo.researchDirection}</span>
-        <span className="text-sky-dark" aria-hidden="true">·</span>
-        <span>{personalInfo.location}</span>
+        <span className="flex items-center gap-3">
+          <span className="text-sky-dark" aria-hidden="true">·</span>
+          <span>{edu.degree} <span className="text-accent-text">@ {edu.institution.match(/\(([^)]+)\)/)?.[1] || 'CUET'}</span></span>
+        </span>
+        <span className="flex items-center gap-3">
+          <span className="text-sky-dark" aria-hidden="true">·</span>
+          <span>{personalInfo.researchDirection}</span>
+        </span>
+        <span className="flex items-center gap-3">
+          <span className="text-sky-dark" aria-hidden="true">·</span>
+          <span>{personalInfo.location}</span>
+        </span>
       </div>
 
       {/* OVERVIEW — body-font blurb about me (pixel font was unreadable at body size) */}
@@ -100,17 +160,128 @@ export default function Home() {
         ))}
       </div>
 
+      {/* RESEARCH STRIP — the ONE new block on the homepage.
+          It answers "does this person do research?" in a single
+          glance without turning the landing page into a wall.
+
+          Three short lines, no cards, no tables, no third
+          paragraph — the whole point is that it stays compact:
+            1. the research focus (from researchStatement.summary)
+            2. the manuscript status (from publications[0])
+            3. what the active investigations are
+
+          Plus two links out: the agenda page where the
+          industry→research bridge lives, and the full research
+          index.
+
+          The strip reuses the Stack block's treatment (uppercase
+          tracked label, hairline dividers, `max-w-6xl` column) so
+          it reads as a sibling section rather than a new visual
+          language bolted onto the page.
+
+          MOTION — deliberately matched to the Stack's, so the two
+          blocks arrive the same way and the page reads as one
+          continuous scroll rather than two differently-animated
+          sections. Three layers:
+            1. wrapper `stack-rise` — the block lifts 80px
+            2. label `stack-label` — grows from 0.5× scale
+            3. the three lines — staggered `lift-in`
+          Because the label is wrapped in its OWN `RevealOnScroll`,
+          the grow keyframe fires independently of the wrapper's
+          rise, so the two sequence: block rises first, title
+          settles second. */}
+      <RevealOnScroll
+        as="div"
+        revealClass="stack-rise"
+        className="mt-16 sm:mt-20 w-full text-left"
+      >
+        {/* Header row — full-bleed, label left / links right.
+            Same `ml-auto` pinning trick as the Stack header and
+            the Navbar. */}
+        <div className="flex items-baseline gap-6 px-4 sm:px-6 lg:px-8">
+          {/* Section label — its own RevealOnScroll so the
+              `stack-label` grow fires on its own beat, exactly
+              as the Stack's does. */}
+          <RevealOnScroll
+            as="span"
+            revealClass="stack-label"
+            className="inline-block shrink-0"
+          >
+            <span className="text-3xl sm:text-4xl font-bold uppercase tracking-[0.12em] text-fg-mute/50">
+              Research
+            </span>
+          </RevealOnScroll>
+          <div className="ml-auto flex items-baseline gap-5 text-xs uppercase tracking-[0.25em]">
+            <button
+              type="button"
+              onClick={() => navigate('/research/agenda')}
+              className="text-fg-mute hover:text-fg transition-colors duration-200"
+            >
+              Agenda
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/research')}
+              className="text-sky-light hover:text-fg transition-colors duration-200"
+            >
+              See all →
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-5 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-t border-divider">
+            {/* The three lines. Each is its OWN `RevealOnScroll`
+                rather than a bare `lift-in` class, and that
+                distinction matters: a bare `lift-in` animates on
+                MOUNT, so it would play out behind the hidden
+                wrapper and never be seen. Wrapping each line
+                means it reveals when it actually scrolls into
+                view, staggered by the `delay` prop so the three
+                arrive in order rather than all at once.
+
+                The Stack's rows use the bare-class approach, which
+                is why its per-row stagger is not perceptible —
+                the block's `stack-rise` is the motion you actually
+                see there. Here the lines are the content, so they
+                are given the real thing. */}
+            <RevealOnScroll as="div" revealClass="lift-in" delay={0.1}>
+              <p className="py-4 text-base text-fg leading-relaxed max-w-3xl">
+                {researchStatement.summary}
+              </p>
+            </RevealOnScroll>
+
+            {/* Line 2 — the manuscript status. The claim is read
+                off the data so it can never drift from the truth
+                recorded in publications[0]. */}
+            <RevealOnScroll as="div" revealClass="lift-in" delay={0.17}>
+              <p className="py-4 text-sm text-fg-dim leading-relaxed max-w-3xl border-t border-divider">
+                <span className="text-fg font-medium">{pub.status}</span>: {pub.title} ({pub.authors}).
+              </p>
+            </RevealOnScroll>
+
+            {/* Line 3 — what the active investigations are. */}
+            <RevealOnScroll as="div" revealClass="lift-in" delay={0.24}>
+              <p className="py-4 text-sm text-fg-dim leading-relaxed max-w-3xl border-t border-divider">
+                <span className="text-fg font-medium">{activeCount} active investigations</span>{' '}
+                in preference optimization (LoRA/QLoRA, DPO), inference efficiency (prefill/decode, KV cache), and evaluation &amp; safety for code-executing LLM agents.
+              </p>
+            </RevealOnScroll>
+          </div>
+        </div>
+      </RevealOnScroll>
+
       {/* STACK — categorized skills with annotation dots.
           Slides up from the bottom edge of the viewport the
           first time it enters the scene (scroll-triggered,
-          once-only). The hero above stays calm on first paint;
-          the Stack reveal is the landing page's one moving
-          beat. Powered by `RevealOnScroll` + the `.stack-rise`
-          keyframe.
+          once-only). The hero above stays calm on first paint.
+          Powered by `RevealOnScroll` + the `.stack-rise`
+          keyframe, shared with the Research strip above so both
+          blocks arrive the same way.
 
-          LAYOUT — the header row (STACK label + shipped/
-          research/learning legend) spans the FULL viewport so
-          the label hugs the left screen edge and the legend
+          LAYOUT — the header row (STACK label + the
+          research/shipped/working legend) spans the FULL viewport
+          so the label hugs the left screen edge and the legend
           hugs the right, mirroring the Navbar's brand-left /
           tabs-right arrangement. The skill ROWS below stay in
           a `max-w-6xl mx-auto` reading column — they need a
@@ -118,25 +289,26 @@ export default function Home() {
           them to the gutters would strand the category column
           far from its skills.
 
-          ROW TREATMENT — same 10 categories in the same
-          order; only the visual treatment changed. Category
-          cells are now ALL-CAPS + tracked (text-sm,
-          tracking-[0.2em]) so the label reads as a section
-          marker at a glance. Skills text drops from text-lg
-          to text-base so the row doesn't feel like a
-          billboard. Category column widened from 220px to
-          280px; gap from 12 to 16 for more air between
-          category and skills; row padding from py-5 back to
-          py-4 (tighter rows since caps compensate for the
-          lost visual weight).
+          ORDER — research categories come first (the data file
+          controls the order). A professor scanning this table
+          lands on the top rows, so the top rows should be the
+          research ones. The table stays ONE block — it is not
+          split into two, because two stacked tables would double
+          the length of the page for no gain.
 
-          Top margin is `mt-28 sm:mt-36` — the overview blurb
-          above needs real breathing room before the Stack
-          arrives, not just a token gap. */}
+          ROW TREATMENT — category cells are ALL-CAPS + tracked
+          (text-sm, tracking-[0.2em]) so the label reads as a
+          section marker at a glance. Skills text is text-base so
+          the row doesn't feel like a billboard. Category column
+          is 280px; gap 16; rows padded py-4.
+
+          Top margin is `mt-20 sm:mt-24` — the research strip
+          above needs breathing room before the Stack arrives,
+          not just a token gap. */}
       <RevealOnScroll
         as="div"
         revealClass="stack-rise"
-        className="mt-28 sm:mt-36 w-full text-left"
+        className="mt-20 sm:mt-24 w-full text-left"
       >
         {/* Header row — full-bleed. `ml-auto` on the legend
             (rather than `justify-between`, which would split
@@ -162,14 +334,14 @@ export default function Home() {
             </span>
           </RevealOnScroll>
           <p className="ml-auto shrink-0 text-xs uppercase tracking-[0.25em] text-fg-mute">
-            <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: markColor.shipped }} aria-hidden="true" />
-            shipped
-            <span className="mx-2 text-fg-mute">·</span>
             <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: markColor.research }} aria-hidden="true" />
             research
             <span className="mx-2 text-fg-mute">·</span>
-            <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: markColor.learning }} aria-hidden="true" />
-            learning
+            <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: markColor.shipped }} aria-hidden="true" />
+            shipped
+            <span className="mx-2 text-fg-mute">·</span>
+            <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: markColor.working }} aria-hidden="true" />
+            working
           </p>
         </div>
 
